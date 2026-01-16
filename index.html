@@ -125,6 +125,128 @@ function showPage(pageId) {
   document.getElementById(pageId).style.display = "block";
 }
 
+/* ---------- APP STATE ---------- */
+let appState = {
+  name: "",
+  semestersCompleted: 0,
+  currentSemester: 0,
+  currentGPA: 0
+};
+
+/* ---------- GRADE POINTS ---------- */
+const gradePoints = {
+  "O": 10,
+  "A+": 9,
+  "A": 8,
+  "B+": 7,
+  "B": 6,
+  "C": 5,
+  "RA": 0
+};
+
+/* ---------- CURRICULUM (R2021 – CSE) ---------- */
+/* Semester I only (template) */
+const curriculum = {
+  1: [
+    { code: "HS3152", name: "Professional English - I", credits: 3 },
+    { code: "MA3151", name: "Matrices and Calculus", credits: 4 },
+    { code: "PH3151", name: "Engineering Physics", credits: 3 },
+    { code: "CY3151", name: "Engineering Chemistry", credits: 3 },
+    { code: "GE3151", name: "Problem Solving and Python Programming", credits: 3 },
+    { code: "GE3152", name: "Heritage of Tamils", credits: 1 },
+    { code: "GE3171", name: "Problem Solving and Python Programming Laboratory", credits: 2 },
+    { code: "BS3171", name: "Physics and Chemistry Laboratory", credits: 2 },
+    { code: "GE3172", name: "English Laboratory", credits: 1 }
+  ]
+};
+
+/* ---------- PAGE 1 LOGIC ---------- */
+function handleWelcome() {
+  const name = document.getElementById("studentName").value.trim();
+  const sems = document.getElementById("semCompleted").value;
+
+  if (!name || !sems) {
+    alert("Please enter name and semesters completed.");
+    return;
+  }
+
+  appState.name = name;
+  appState.semestersCompleted = parseInt(sems);
+  appState.currentSemester = appState.semestersCompleted;
+
+  loadSemesterPage(appState.currentSemester);
+}
+
+/* ---------- LOAD SEMESTER GPA PAGE ---------- */
+function loadSemesterPage(semester) {
+  const page = document.getElementById("page-semester");
+  page.innerHTML = `
+    <h1>Semester ${semester} GPA Calculator</h1>
+    <p>Hello ${appState.name}</p>
+    <div id="subjects"></div>
+    <button onclick="calculateGPA()">Calculate GPA</button>
+    <div id="gpaResult"></div>
+    <button onclick="showPage('page-welcome')">Back to Menu</button>
+  `;
+
+  const subjectsDiv = document.getElementById("subjects");
+  const subjects = curriculum[semester];
+
+  subjects.forEach(sub => {
+    subjectsDiv.innerHTML += `
+      <label>${sub.code} – ${sub.name} (${sub.credits} credits)</label>
+      <select id="${sub.code}">
+        <option value="">Select Grade</option>
+        <option>O</option>
+        <option>A+</option>
+        <option>A</option>
+        <option>B+</option>
+        <option>B</option>
+        <option>C</option>
+        <option>RA</option>
+      </select>
+    `;
+  });
+
+  showPage("page-semester");
+}
+
+/* ---------- GPA CALCULATION ---------- */
+function calculateGPA() {
+  const subjects = curriculum[appState.currentSemester];
+  let totalCredits = 0;
+  let totalPoints = 0;
+
+  for (let sub of subjects) {
+    const grade = document.getElementById(sub.code).value;
+    if (!grade) {
+      alert("Please select all grades.");
+      return;
+    }
+    totalCredits += sub.credits;
+    totalPoints += gradePoints[grade] * sub.credits;
+  }
+
+  const gpa = (totalPoints / totalCredits).toFixed(2);
+  appState.currentGPA = gpa;
+
+  document.getElementById("gpaResult").innerHTML = `
+    <h3>Your Semester ${appState.currentSemester} GPA is: ${gpa}</h3>
+  `;
+}
+
+/* ---------- INIT ---------- */
+showPage("page-welcome");
+</script>
+
+/* ---------- SPA CORE ---------- */
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.style.display = "none";
+  });
+  document.getElementById(pageId).style.display = "block";
+}
+
 /* ---------- PAGE 1 LOGIC ---------- */
 let appState = {
   name: "",
@@ -152,3 +274,4 @@ showPage("page-welcome");
 
 </body>
 </html>
+
