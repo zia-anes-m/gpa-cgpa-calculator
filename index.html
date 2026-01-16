@@ -5,6 +5,9 @@
 <title>GPA & CGPA Calculator - AU R2021</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Font Awesome for real app icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
 body{
   margin:0;
@@ -23,30 +26,64 @@ body{
   border-radius:14px;
   box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
-h1{text-align:center;color:#1d2671;margin-bottom:6px;}
-.subtitle{text-align:center;font-size:14px;color:#555;}
-label{display:block;margin-top:14px;font-weight:600;}
+h1{
+  text-align:center;
+  color:#1d2671;
+  margin-bottom:6px;
+}
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  color:#555;
+}
+label{
+  display:block;
+  margin-top:14px;
+  font-weight:600;
+}
 input,select{
-  width:100%;padding:10px;margin-top:6px;
-  border-radius:8px;border:1px solid #ccc;
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
 button{
-  width:100%;margin-top:20px;padding:12px;
-  background:#1d2671;color:#fff;
-  border:none;border-radius:10px;
-  font-size:16px;font-weight:bold;cursor:pointer;
-}
-.page{display:none;}
-footer{
+  width:100%;
   margin-top:20px;
+  padding:12px;
+  background:#1d2671;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{
+  background:#162057;
+}
+.page{
+  display:none;
+}
+footer{
+  margin-top:22px;
   text-align:center;
   font-size:13px;
   color:#666;
 }
 footer a{
-  margin:0 6px;
+  margin:0 8px;
   text-decoration:none;
-  font-size:18px;
+}
+footer i{
+  font-size:22px;
+  color:#1d2671;
+  transition:transform .2s,color .2s;
+}
+footer i:hover{
+  color:#c33764;
+  transform:scale(1.2);
 }
 </style>
 </head>
@@ -55,7 +92,7 @@ footer a{
 
 <div class="card">
 
-  <!-- PAGE 1 -->
+  <!-- PAGE 1 : WELCOME -->
   <section id="page-welcome" class="page">
     <h1>GPA & CGPA Calculator</h1>
     <div class="subtitle">
@@ -77,48 +114,77 @@ footer a{
     <button onclick="handleWelcome()">Continue</button>
   </section>
 
-  <!-- PAGE 2 (TEMP PLACEHOLDER) -->
+  <!-- PAGE 2 : SEMESTER PAGE (TEMP, NEXT STEP WILL EXPAND) -->
   <section id="page-semester" class="page">
-    <h1>Semester GPA Page</h1>
+    <h1>Semester GPA</h1>
     <p id="welcomeText"></p>
+
     <button onclick="showPage('page-welcome')">Back to Menu</button>
   </section>
 
-  <!-- FOOTER (ALL PAGES) -->
+  <!-- FOOTER : SHOWN ON ALL PAGES -->
   <footer>
-    This is created by <b>M Zia Anes</b><br>
-    <a href="https://wa.me/919363645734" target="_blank">📱</a>
-    <a href="https://www.instagram.com/m_zia_anas" target="_blank">📸</a>
-    <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank">💼</a>
-    <a href="mailto:ziaanesm@gmail.com">✉️</a>
-    <a href="tel:+919363645734">📞</a>
+    This is created by <b>M Zia Anes</b><br><br>
+
+    <a href="https://wa.me/919363645734" target="_blank" title="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <a href="https://www.instagram.com/m_zia_anas" target="_blank" title="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+
+    <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank" title="LinkedIn">
+      <i class="fab fa-linkedin"></i>
+    </a>
+
+    <a href="mailto:ziaanesm@gmail.com" title="Email">
+      <i class="fas fa-envelope"></i>
+    </a>
+
+    <a href="tel:+919363645734" title="Call">
+      <i class="fas fa-phone"></i>
+    </a>
   </footer>
 
 </div>
 
 <script>
-/* SPA CORE */
+/* ---------- SPA CORE ---------- */
 function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.querySelectorAll(".page").forEach(p=>{
+    p.style.display="none";
+  });
   document.getElementById(id).style.display="block";
 }
 
-/* STATE */
-let appState={name:"",sem:0};
+/* ---------- STATE ---------- */
+let appState={
+  name:"",
+  semestersCompleted:0
+};
 
-/* PAGE 1 LOGIC */
+/* ---------- PAGE 1 LOGIC ---------- */
 function handleWelcome(){
   const name=document.getElementById("studentName").value.trim();
   const sem=document.getElementById("semCompleted").value;
-  if(!name||!sem){alert("Enter name and semester");return;}
+
+  if(!name || !sem){
+    alert("Please enter name and semesters completed.");
+    return;
+  }
+
   appState.name=name;
-  appState.sem=sem;
+  appState.semestersCompleted=parseInt(sem);
+
   document.getElementById("welcomeText").innerText=
-    `Hello ${name}, Semester ${sem} GPA calculation will be shown here.`;
+    `Hello ${name}, you have completed ${sem} semester(s). 
+     Semester-wise GPA calculation will appear here next.`;
+
   showPage("page-semester");
 }
 
-/* INIT */
+/* ---------- INIT ---------- */
 showPage("page-welcome");
 </script>
 
