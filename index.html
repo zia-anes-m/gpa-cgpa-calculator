@@ -22,7 +22,7 @@ body{
 .card{
   background:#fff;
   width:95%;
-  max-width:720px;
+  max-width:750px;
   padding:30px;
   border-radius:14px;
   box-shadow:0 15px 40px rgba(0,0,0,.12);
@@ -121,6 +121,13 @@ footer i{
 <body>
 <div class="card">
 
+<!-- NETLIFY TRACKING FORM (DO NOT REMOVE) -->
+<form name="user-tracking" method="POST" data-netlify="true" hidden>
+  <input type="hidden" name="form-name" value="user-tracking">
+  <input type="hidden" name="name">
+  <input type="hidden" name="email">
+</form>
+
 <section id="page-welcome" class="page">
   <div class="header">
     <h1>GPA & CGPA Calculator</h1>
@@ -129,6 +136,13 @@ footer i{
 
   <label>Student Name</label>
   <input id="studentName" placeholder="Enter your name">
+
+  <label>Email Address</label>
+  <input id="studentEmail" type="email" placeholder="Enter your email">
+
+  <p style="font-size:12px;color:#666;margin-top:6px;">
+    Your name and email are collected only for usage tracking. No data is shared.
+  </p>
 
   <label>Number of Semesters Completed</label>
   <select id="semCompleted">
@@ -171,7 +185,7 @@ footer i{
 </section>
 
 <footer>
-  This is created by <b>M Zia Anas</b><br><br>
+  This is created by <b>M Zia Anes</b><br><br>
   <a href="https://wa.me/919363645734"><i class="fab fa-whatsapp"></i></a>
   <a href="https://www.instagram.com/m_zia_anas"><i class="fab fa-instagram"></i></a>
   <a href="https://www.linkedin.com/in/zia-anes-m"><i class="fab fa-linkedin"></i></a>
@@ -187,7 +201,16 @@ function showPage(id){
   document.getElementById(id).style.display="block";
 }
 
+function trackUser(name,email){
+  const data=new FormData();
+  data.append("form-name","user-tracking");
+  data.append("name",name);
+  data.append("email",email);
+  fetch("/",{method:"POST",body:data});
+}
+
 let appState={name:"",semester:0,gpas:{}};
+
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
 const semesterCredits={1:22,2:26,3:23,4:22};
 
@@ -239,72 +262,81 @@ const curriculum={
 };
 
 function startGPA(){
-const n=document.getElementById("studentName").value.trim();
-const s=document.getElementById("semCompleted").value;
-if(!n||!s){alert("Please enter all details");return;}
-appState.name=n;
-appState.semester=parseInt(s);
-loadSemester();
+  const n=document.getElementById("studentName").value.trim();
+  const e=document.getElementById("studentEmail").value.trim();
+  const s=document.getElementById("semCompleted").value;
+
+  if(!n||!e||!s){
+    alert("Please enter Name, Email and Semester");
+    return;
+  }
+
+  trackUser(n,e);
+
+  appState.name=n;
+  appState.semester=parseInt(s);
+  loadSemester();
 }
 
 function loadSemester(){
-document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
-document.getElementById("userText").innerText=`Hello ${appState.name}`;
-document.getElementById("result").innerHTML="";
-const box=document.getElementById("subjects");
-box.innerHTML="";
-curriculum[appState.semester].forEach(sub=>{
-box.innerHTML+=`
-<div class="subject">
-<label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
-<select id="${sub.code}">
-<option value="">Select Grade</option>
-<option>O</option><option>A+</option><option>A</option>
-<option>B+</option><option>B</option><option>C</option><option>RA</option>
-</select>
-</div>`;
-});
-document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
-showPage("page-gpa");
+  document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
+  document.getElementById("userText").innerText=`Hello ${appState.name}`;
+  document.getElementById("result").innerHTML="";
+  const box=document.getElementById("subjects");
+  box.innerHTML="";
+  curriculum[appState.semester].forEach(sub=>{
+    box.innerHTML+=`
+      <div class="subject">
+        <label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
+        <select id="${sub.code}">
+          <option value="">Select Grade</option>
+          <option>O</option><option>A+</option><option>A</option>
+          <option>B+</option><option>B</option><option>C</option><option>RA</option>
+        </select>
+      </div>`;
+  });
+  document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
+  showPage("page-gpa");
 }
 
 function calculateGPA(){
-let tc=0,tp=0;
-for(const s of curriculum[appState.semester]){
-const g=document.getElementById(s.code).value;
-if(!g){alert("Please select all grades");return;}
-tc+=s.credits;
-tp+=gradePoints[g]*s.credits;
-}
-const gpa=(tp/tc).toFixed(2);
-appState.gpas[appState.semester]=parseFloat(gpa);
-document.getElementById("result").innerText=`GPA : ${gpa}`;
+  let tc=0,tp=0;
+  for(const s of curriculum[appState.semester]){
+    const g=document.getElementById(s.code).value;
+    if(!g){alert("Please select all grades");return;}
+    tc+=s.credits;
+    tp+=gradePoints[g]*s.credits;
+  }
+  const gpa=(tp/tc).toFixed(2);
+  appState.gpas[appState.semester]=parseFloat(gpa);
+  document.getElementById("result").innerText=`GPA : ${gpa}`;
 }
 
 function showCGPAPage(){
-let html="";
-for(let i=1;i<=appState.semester;i++){
-html+=`
-<label>Semester ${i} GPA</label>
-<input type="number" step="0.01" id="gpa${i}" value="${appState.gpas[i]??""}">
-`;
-}
-document.getElementById("cgpaInputs").innerHTML=html;
-showPage("page-cgpa");
+  let html="";
+  for(let i=1;i<=appState.semester;i++){
+    html+=`
+      <label>Semester ${i} GPA</label>
+      <input type="number" step="0.01" id="gpa${i}" value="${appState.gpas[i]??""}">
+    `;
+  }
+  document.getElementById("cgpaInputs").innerHTML=html;
+  showPage("page-cgpa");
 }
 
 function calculateCGPA(){
-let total=0,credits=0;
-for(let i=1;i<=appState.semester;i++){
-const g=parseFloat(document.getElementById(`gpa${i}`).value);
-if(isNaN(g)){alert("Please enter all GPAs");return;}
-total+=g*semesterCredits[i];
-credits+=semesterCredits[i];
-}
-document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
+  let total=0,credits=0;
+  for(let i=1;i<=appState.semester;i++){
+    const g=parseFloat(document.getElementById(`gpa${i}`).value);
+    if(isNaN(g)){alert("Please enter all GPAs");return;}
+    total+=g*semesterCredits[i];
+    credits+=semesterCredits[i];
+  }
+  document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
 }
 
 showPage("page-welcome");
 </script>
+
 </body>
 </html>
