@@ -2,25 +2,119 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GPA & CGPA Calculator - AU R2021</title>
+<title>GPA & CGPA Calculator | Anna University R2021</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-body{margin:0;font-family:Segoe UI,sans-serif;background:#fff;min-height:100vh;display:flex;justify-content:center;align-items:center;}
-.card{background:#fff;width:95%;max-width:600px;padding:25px;border-radius:10px;box-shadow:0 8px 25px rgba(0,0,0,.1);}
-h1{text-align:center;color:#1d2671;}
-.subtitle{text-align:center;font-size:14px;color:#555;}
-label{display:block;margin-top:12px;font-weight:600;}
-select,input{width:100%;padding:10px;margin-top:5px;border-radius:6px;border:1px solid #ccc;}
-button{width:100%;margin-top:16px;padding:12px;background:#1d2671;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;}
-.page{display:none;}
-footer{text-align:center;font-size:13px;color:#444;margin-top:20px;}
-footer i{font-size:22px;margin:0 8px;}
-.fa-whatsapp{color:#25D366;}
-.fa-instagram{background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.fa-linkedin{color:#0A66C2;}
-.fa-phone{color:#2E7D32;}
-.fa-envelope{color:#D93025;}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background:#f4f6fb;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  background:#fff;
+  width:95%;
+  max-width:720px;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:25px;
+}
+.header h1{
+  margin:0;
+  font-size:28px;
+  color:#1d2671;
+}
+.header p{
+  margin:6px 0 0;
+  color:#555;
+  font-size:14px;
+}
+
+label{
+  display:block;
+  margin-top:16px;
+  font-weight:600;
+  color:#333;
+}
+
+select,input{
+  width:100%;
+  padding:11px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  margin-top:22px;
+  padding:13px;
+  background:linear-gradient(135deg,#1d2671,#3f51b5);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#e0e3f5;
+  color:#1d2671;
+}
+
+.page{display:none}
+
+.subject{
+  padding:10px;
+  border-radius:8px;
+  background:#f7f8ff;
+  margin-top:12px;
+}
+
+.result{
+  text-align:center;
+  margin-top:20px;
+  font-size:20px;
+  font-weight:bold;
+  color:#1d2671;
+}
+
+footer{
+  text-align:center;
+  font-size:13px;
+  color:#444;
+  margin-top:30px;
+}
+
+footer i{
+  font-size:22px;
+  margin:0 8px;
+}
+
+.fa-whatsapp{color:#25D366}
+.fa-instagram{
+  background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.fa-linkedin{color:#0A66C2}
+.fa-phone{color:#2E7D32}
+.fa-envelope{color:#D93025}
 </style>
 </head>
 
@@ -28,52 +122,61 @@ footer i{font-size:22px;margin:0 8px;}
 <div class="card">
 
 <section id="page-welcome" class="page">
-<h1>GPA & CGPA Calculator</h1>
-<div class="subtitle">CSE – Anna University (R2021)</div>
+  <div class="header">
+    <h1>GPA & CGPA Calculator</h1>
+    <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+  </div>
 
-<label>Student Name</label>
-<input id="studentName">
+  <label>Student Name</label>
+  <input id="studentName" placeholder="Enter your name">
 
-<label>Number of Semesters Completed</label>
-<select id="semCompleted">
-<option value="">Select</option>
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-</select>
+  <label>Number of Semesters Completed</label>
+  <select id="semCompleted">
+    <option value="">Select</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+  </select>
 
-<button onclick="startGPA()">Continue</button>
+  <button onclick="startGPA()">Continue</button>
 </section>
 
 <section id="page-gpa" class="page">
-<h1 id="semTitle"></h1>
-<p id="userText"></p>
+  <div class="header">
+    <h1 id="semTitle"></h1>
+    <p id="userText"></p>
+  </div>
 
-<div id="subjects"></div>
+  <div id="subjects"></div>
 
-<button onclick="calculateGPA()">Calculate GPA</button>
-<div id="result"></div>
+  <button onclick="calculateGPA()">Calculate GPA</button>
+  <div id="result" class="result"></div>
 
-<button id="cgpaBtn" style="display:none" onclick="showCGPAPage()">Calculate CGPA</button>
-<button onclick="showPage('page-welcome')">Back</button>
+  <button id="cgpaBtn" style="display:none" onclick="showCGPAPage()">Calculate CGPA</button>
+  <button class="secondary" onclick="showPage('page-welcome')">Back to Menu</button>
 </section>
 
 <section id="page-cgpa" class="page">
-<h1>CGPA Calculator</h1>
-<div id="cgpaInputs"></div>
-<button onclick="calculateCGPA()">Calculate CGPA</button>
-<div id="cgpaResult"></div>
-<button onclick="showPage('page-welcome')">Back</button>
+  <div class="header">
+    <h1>CGPA Calculator</h1>
+  </div>
+
+  <div id="cgpaInputs"></div>
+
+  <button onclick="calculateCGPA()">Calculate CGPA</button>
+  <div id="cgpaResult" class="result"></div>
+
+  <button class="secondary" onclick="showPage('page-welcome')">Back to Menu</button>
 </section>
 
 <footer>
-This is created by <b>M Zia Anes</b><br><br>
-<a href="https://wa.me/919363645734"><i class="fab fa-whatsapp"></i></a>
-<a href="https://www.instagram.com/m_zia_anas"><i class="fab fa-instagram"></i></a>
-<a href="https://www.linkedin.com/in/zia-anes-m"><i class="fab fa-linkedin"></i></a>
-<a href="mailto:ziaanesm@gmail.com"><i class="fas fa-envelope"></i></a>
-<a href="tel:+919363645734"><i class="fas fa-phone"></i></a>
+  This is created by <b>M Zia Anas</b><br><br>
+  <a href="https://wa.me/919363645734"><i class="fab fa-whatsapp"></i></a>
+  <a href="https://www.instagram.com/m_zia_anas"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.linkedin.com/in/zia-anes-m"><i class="fab fa-linkedin"></i></a>
+  <a href="mailto:ziaanesm@gmail.com"><i class="fas fa-envelope"></i></a>
+  <a href="tel:+919363645734"><i class="fas fa-phone"></i></a>
 </footer>
 
 </div>
@@ -86,7 +189,6 @@ function showPage(id){
 
 let appState={name:"",semester:0,gpas:{}};
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
-
 const semesterCredits={1:22,2:26,3:23,4:22};
 
 const curriculum={
@@ -95,33 +197,33 @@ const curriculum={
 {code:"MA3151",name:"Matrices and Calculus",credits:4},
 {code:"PH3151",name:"Engineering Physics",credits:3},
 {code:"CY3151",name:"Engineering Chemistry",credits:3},
-{code:"GE3151",name:"PSPP",credits:3},
+{code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
 {code:"GE3152",name:"Heritage of Tamils",credits:1},
-{code:"GE3171",name:"PSPP Lab",credits:2},
-{code:"BS3171",name:"Physics & Chemistry Lab",credits:2},
-{code:"GE3172",name:"English Lab",credits:1}
+{code:"GE3171",name:"Problem Solving and Python Programming Laboratory",credits:2},
+{code:"BS3171",name:"Physics and Chemistry Laboratory",credits:2},
+{code:"GE3172",name:"English Laboratory",credits:1}
 ],
 2:[
 {code:"HS3252",name:"Professional English II",credits:2},
-{code:"MA3251",name:"Statistics & Numerical Methods",credits:4},
-{code:"PH3256",name:"Physics for IS",credits:3},
-{code:"BE3251",name:"BEEE",credits:3},
+{code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
+{code:"PH3256",name:"Physics for Information Science",credits:3},
+{code:"BE3251",name:"Basic Electrical and Electronics Engineering",credits:3},
 {code:"GE3251",name:"Engineering Graphics",credits:4},
 {code:"CS3251",name:"Programming in C",credits:3},
-{code:"GE3252",name:"Tamils & Technology",credits:1},
-{code:"GE3271",name:"Engineering Practices Lab",credits:2},
-{code:"CS3271",name:"C Programming Lab",credits:2},
-{code:"GE3272",name:"Communication Lab",credits:2}
+{code:"GE3252",name:"Tamils and Technology",credits:1},
+{code:"GE3271",name:"Engineering Practices Laboratory",credits:2},
+{code:"CS3271",name:"Programming in C Laboratory",credits:2},
+{code:"GE3272",name:"Communication Laboratory",credits:2}
 ],
 3:[
 {code:"MA3354",name:"Discrete Mathematics",credits:4},
-{code:"CS3351",name:"DPCO",credits:4},
+{code:"CS3351",name:"Digital Principles and Computer Organization",credits:4},
 {code:"CS3352",name:"Foundations of Data Science",credits:3},
 {code:"CS3301",name:"Data Structures",credits:3},
-{code:"CS3391",name:"OOPS",credits:3},
-{code:"CS3311",name:"DS Lab",credits:1.5},
-{code:"CS3381",name:"OOPS Lab",credits:1.5},
-{code:"CS3361",name:"Data Science Lab",credits:2},
+{code:"CS3391",name:"Object Oriented Programming",credits:3},
+{code:"CS3311",name:"Data Structures Laboratory",credits:1.5},
+{code:"CS3381",name:"Object Oriented Programming Laboratory",credits:1.5},
+{code:"CS3361",name:"Data Science Laboratory",credits:2},
 {code:"GE3361",name:"Professional Development",credits:1}
 ],
 4:[
@@ -139,7 +241,7 @@ const curriculum={
 function startGPA(){
 const n=document.getElementById("studentName").value.trim();
 const s=document.getElementById("semCompleted").value;
-if(!n||!s){alert("Enter details");return;}
+if(!n||!s){alert("Please enter all details");return;}
 appState.name=n;
 appState.semester=parseInt(s);
 loadSemester();
@@ -153,12 +255,14 @@ const box=document.getElementById("subjects");
 box.innerHTML="";
 curriculum[appState.semester].forEach(sub=>{
 box.innerHTML+=`
-<label>${sub.code} – ${sub.name} (${sub.credits})</label>
+<div class="subject">
+<label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
 <select id="${sub.code}">
-<option value="">Grade</option>
+<option value="">Select Grade</option>
 <option>O</option><option>A+</option><option>A</option>
 <option>B+</option><option>B</option><option>C</option><option>RA</option>
-</select>`;
+</select>
+</div>`;
 });
 document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
 showPage("page-gpa");
@@ -168,13 +272,13 @@ function calculateGPA(){
 let tc=0,tp=0;
 for(const s of curriculum[appState.semester]){
 const g=document.getElementById(s.code).value;
-if(!g){alert("Select all grades");return;}
+if(!g){alert("Please select all grades");return;}
 tc+=s.credits;
 tp+=gradePoints[g]*s.credits;
 }
 const gpa=(tp/tc).toFixed(2);
 appState.gpas[appState.semester]=parseFloat(gpa);
-document.getElementById("result").innerHTML=`<h3>GPA: ${gpa}</h3>`;
+document.getElementById("result").innerText=`GPA : ${gpa}`;
 }
 
 function showCGPAPage(){
@@ -182,7 +286,8 @@ let html="";
 for(let i=1;i<=appState.semester;i++){
 html+=`
 <label>Semester ${i} GPA</label>
-<input type="number" step="0.01" id="gpa${i}" value="${appState.gpas[i]??""}">`;
+<input type="number" step="0.01" id="gpa${i}" value="${appState.gpas[i]??""}">
+`;
 }
 document.getElementById("cgpaInputs").innerHTML=html;
 showPage("page-cgpa");
@@ -192,11 +297,11 @@ function calculateCGPA(){
 let total=0,credits=0;
 for(let i=1;i<=appState.semester;i++){
 const g=parseFloat(document.getElementById(`gpa${i}`).value);
-if(isNaN(g)){alert("Enter all GPAs");return;}
+if(isNaN(g)){alert("Please enter all GPAs");return;}
 total+=g*semesterCredits[i];
 credits+=semesterCredits[i];
 }
-document.getElementById("cgpaResult").innerHTML=`<h3>CGPA: ${(total/credits).toFixed(2)}</h3>`;
+document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
 }
 
 showPage("page-welcome");
