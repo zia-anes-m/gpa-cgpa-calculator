@@ -71,7 +71,6 @@ footer i:hover{color:#c33764;}
 
 <div class="card">
 
-<!-- PAGE 1 -->
 <section id="page-welcome" class="page">
   <h1>GPA & CGPA Calculator</h1>
   <div class="subtitle">
@@ -80,7 +79,7 @@ footer i:hover{color:#c33764;}
   </div>
 
   <label>Student Name</label>
-  <input id="studentName" placeholder="Enter your name">
+  <input id="studentName">
 
   <label>Number of Semesters Completed</label>
   <select id="semCompleted">
@@ -93,7 +92,6 @@ footer i:hover{color:#c33764;}
   <button onclick="startGPA()">Continue</button>
 </section>
 
-<!-- PAGE 2 -->
 <section id="page-gpa" class="page">
   <h1 id="semTitle"></h1>
   <p id="userText"></p>
@@ -127,7 +125,7 @@ let appState={name:"",semester:0};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
 
-/* R2021 CSE – SEM 1 & 2 */
+/* R2021 CSE – SEM 1 & SEM 2 (NCC EXCLUDED) */
 const curriculum={
   1:[
     {code:"HS3152",name:"Professional English – I",credits:3},
@@ -141,14 +139,16 @@ const curriculum={
     {code:"GE3172",name:"English Laboratory",credits:1}
   ],
   2:[
-    {code:"HS3252",name:"Professional English – II",credits:3},
+    {code:"HS3252",name:"Professional English – II",credits:2},
     {code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
     {code:"PH3256",name:"Physics for Information Science",credits:3},
     {code:"BE3251",name:"Basic Electrical and Electronics Engineering",credits:3},
     {code:"GE3251",name:"Engineering Graphics",credits:4},
+    {code:"CS3251",name:"Programming in C",credits:3},
     {code:"GE3252",name:"Tamils and Technology",credits:1},
     {code:"GE3271",name:"Engineering Practices Laboratory",credits:2},
-    {code:"BE3271",name:"Basic Electrical and Electronics Engineering Laboratory",credits:2}
+    {code:"CS3271",name:"Programming in C Laboratory",credits:2},
+    {code:"GE3272",name:"Communication Laboratory / Foreign Language",credits:2}
   ]
 };
 
@@ -208,4 +208,3 @@ showPage("page-welcome");
 
 </body>
 </html>
-
