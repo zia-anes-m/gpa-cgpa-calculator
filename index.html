@@ -31,7 +31,7 @@ body::before{
 .card{
   background:#ffffffee;
   width:95%;
-  max-width:560px;
+  max-width:580px;
   padding:25px;
   border-radius:14px;
   box-shadow:0 15px 40px rgba(0,0,0,.35);
@@ -44,7 +44,7 @@ select,input{
   border-radius:8px;border:1px solid #ccc;
 }
 button{
-  width:100%;margin-top:20px;padding:12px;
+  width:100%;margin-top:18px;padding:12px;
   background:#1d2671;color:#fff;
   border:none;border-radius:10px;
   font-size:16px;font-weight:bold;
@@ -58,12 +58,18 @@ footer{
   font-size:13px;
   color:#444;
 }
-footer i{
-  font-size:22px;
-  margin:0 8px;
-  color:#1d2671;
+footer a{margin:0 8px;text-decoration:none;}
+/* BRAND COLOURS */
+.fa-whatsapp{color:#25D366;}
+.fa-instagram{
+  background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
-footer i:hover{color:#c33764;}
+.fa-linkedin{color:#0A66C2;}
+.fa-phone{color:#2E7D32;}
+.fa-envelope{color:#D93025;}
+footer i{font-size:22px;}
 </style>
 </head>
 
@@ -101,6 +107,15 @@ footer i:hover{color:#c33764;}
   <button onclick="calculateGPA()">Calculate GPA</button>
   <div id="result"></div>
 
+  <button id="cgpaBtn" style="display:none" onclick="showCGPAPage()">Calculate CGPA</button>
+  <button onclick="showPage('page-welcome')">Back to Menu</button>
+</section>
+
+<section id="page-cgpa" class="page">
+  <h1>CGPA Calculator</h1>
+  <div id="cgpaInputs"></div>
+  <button onclick="calculateCGPA()">Calculate CGPA</button>
+  <div id="cgpaResult"></div>
   <button onclick="showPage('page-welcome')">Back to Menu</button>
 </section>
 
@@ -124,43 +139,37 @@ function showPage(id){
 let appState={name:"",semester:0};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
+const semesterCredits={1:22,2:26,3:23};
 
-/* R2021 CSE – SEM 1, 2, 3 */
 const curriculum={
-  1:[
-    {code:"HS3152",name:"Professional English – I",credits:3},
-    {code:"MA3151",name:"Matrices and Calculus",credits:4},
-    {code:"PH3151",name:"Engineering Physics",credits:3},
-    {code:"CY3151",name:"Engineering Chemistry",credits:3},
-    {code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
-    {code:"GE3152",name:"Heritage of Tamils",credits:1},
-    {code:"GE3171",name:"Problem Solving and Python Programming Laboratory",credits:2},
-    {code:"BS3171",name:"Physics and Chemistry Laboratory",credits:2},
-    {code:"GE3172",name:"English Laboratory",credits:1}
-  ],
-  2:[
-    {code:"HS3252",name:"Professional English – II",credits:2},
-    {code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
-    {code:"PH3256",name:"Physics for Information Science",credits:3},
-    {code:"BE3251",name:"Basic Electrical and Electronics Engineering",credits:3},
-    {code:"GE3251",name:"Engineering Graphics",credits:4},
-    {code:"CS3251",name:"Programming in C",credits:3},
-    {code:"GE3252",name:"Tamils and Technology",credits:1},
-    {code:"GE3271",name:"Engineering Practices Laboratory",credits:2},
-    {code:"CS3271",name:"Programming in C Laboratory",credits:2},
-    {code:"GE3272",name:"Communication Laboratory / Foreign Language",credits:2}
-  ],
-  3:[
-    {code:"MA3354",name:"Discrete Mathematics",credits:4},
-    {code:"CS3351",name:"Digital Principles and Computer Organization",credits:4},
-    {code:"CS3352",name:"Foundations of Data Science",credits:3},
-    {code:"CS3301",name:"Data Structures",credits:3},
-    {code:"CS3391",name:"Object Oriented Programming",credits:3},
-    {code:"CS3311",name:"Data Structures Laboratory",credits:1.5},
-    {code:"CS3381",name:"Object Oriented Programming Laboratory",credits:1.5},
-    {code:"CS3361",name:"Data Science Laboratory",credits:2},
-    {code:"GE3361",name:"Professional Development",credits:1}
-  ]
+  1:[{code:"HS3152",name:"Professional English – I",credits:3},
+     {code:"MA3151",name:"Matrices and Calculus",credits:4},
+     {code:"PH3151",name:"Engineering Physics",credits:3},
+     {code:"CY3151",name:"Engineering Chemistry",credits:3},
+     {code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
+     {code:"GE3152",name:"Heritage of Tamils",credits:1},
+     {code:"GE3171",name:"PSPP Lab",credits:2},
+     {code:"BS3171",name:"Physics & Chemistry Lab",credits:2},
+     {code:"GE3172",name:"English Lab",credits:1}],
+  2:[{code:"HS3252",name:"Professional English – II",credits:2},
+     {code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
+     {code:"PH3256",name:"Physics for Information Science",credits:3},
+     {code:"BE3251",name:"BEEE",credits:3},
+     {code:"GE3251",name:"Engineering Graphics",credits:4},
+     {code:"CS3251",name:"Programming in C",credits:3},
+     {code:"GE3252",name:"Tamils and Technology",credits:1},
+     {code:"GE3271",name:"Engineering Practices Lab",credits:2},
+     {code:"CS3271",name:"C Programming Lab",credits:2},
+     {code:"GE3272",name:"Communication Lab",credits:2}],
+  3:[{code:"MA3354",name:"Discrete Mathematics",credits:4},
+     {code:"CS3351",name:"DPCO",credits:4},
+     {code:"CS3352",name:"Foundations of Data Science",credits:3},
+     {code:"CS3301",name:"Data Structures",credits:3},
+     {code:"CS3391",name:"OOPS",credits:3},
+     {code:"CS3311",name:"DS Lab",credits:1.5},
+     {code:"CS3381",name:"OOPS Lab",credits:1.5},
+     {code:"CS3361",name:"Data Science Lab",credits:2},
+     {code:"GE3361",name:"Professional Development",credits:1}]
 };
 
 function startGPA(){
@@ -169,49 +178,61 @@ function startGPA(){
   if(!name||!sem){alert("Enter name and semester");return;}
   appState.name=name;
   appState.semester=parseInt(sem);
-  if(!curriculum[appState.semester]){
-    alert("This semester will be added next.");
-    return;
-  }
   loadSemester();
 }
 
 function loadSemester(){
-  document.getElementById("semTitle").innerText=
-    `Semester ${appState.semester} GPA Calculator`;
-  document.getElementById("userText").innerText=
-    `Hello ${appState.name}, enter your grades below`;
-
+  document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
+  document.getElementById("userText").innerText=`Hello ${appState.name}`;
   const box=document.getElementById("subjects");
   box.innerHTML="";
-
   curriculum[appState.semester].forEach(s=>{
     box.innerHTML+=`
-      <div class="subject">
-        <label>${s.code} – ${s.name} (${s.credits} credits)</label>
-        <select id="${s.code}">
-          <option value="">Select Grade</option>
-          <option>O</option><option>A+</option><option>A</option>
-          <option>B+</option><option>B</option><option>C</option><option>RA</option>
-        </select>
-      </div>`;
+      <label>${s.code} – ${s.name} (${s.credits} credits)</label>
+      <select id="${s.code}">
+        <option value="">Grade</option>
+        <option>O</option><option>A+</option><option>A</option>
+        <option>B+</option><option>B</option><option>C</option><option>RA</option>
+      </select>`;
   });
-
-  document.getElementById("result").innerHTML="";
+  document.getElementById("cgpaBtn").style.display=
+    appState.semester>=2 ? "block" : "none";
   showPage("page-gpa");
 }
 
 function calculateGPA(){
-  let totalCredits=0,totalPoints=0;
-  for(const s of curriculum[appState.semester]){
+  let tc=0,tp=0;
+  curriculum[appState.semester].forEach(s=>{
     const g=document.getElementById(s.code).value;
     if(!g){alert("Select all grades");return;}
-    totalCredits+=s.credits;
-    totalPoints+=gradePoints[g]*s.credits;
-  }
-  const gpa=(totalPoints/totalCredits).toFixed(2);
+    tc+=s.credits;
+    tp+=gradePoints[g]*s.credits;
+  });
   document.getElementById("result").innerHTML=
-    `<h3>Your Semester ${appState.semester} GPA is ${gpa}</h3>`;
+    `<h3>GPA: ${(tp/tc).toFixed(2)}</h3>`;
+}
+
+function showCGPAPage(){
+  let html="";
+  for(let i=1;i<=appState.semester;i++){
+    html+=`
+      <label>Semester ${i} GPA</label>
+      <input type="number" step="0.01" id="gpa${i}">`;
+  }
+  document.getElementById("cgpaInputs").innerHTML=html;
+  showPage("page-cgpa");
+}
+
+function calculateCGPA(){
+  let total=0,credits=0;
+  for(let i=1;i<=appState.semester;i++){
+    const gpa=parseFloat(document.getElementById(`gpa${i}`).value);
+    if(isNaN(gpa)){alert("Enter all GPAs");return;}
+    total+=gpa*semesterCredits[i];
+    credits+=semesterCredits[i];
+  }
+  document.getElementById("cgpaResult").innerHTML=
+    `<h3>CGPA: ${(total/credits).toFixed(2)}</h3>`;
 }
 
 showPage("page-welcome");
