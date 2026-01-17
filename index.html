@@ -40,9 +40,7 @@ button{
   cursor:pointer;
 }
 .page{display:none;}
-.subject{
-  margin-top:12px;
-}
+.subject{margin-top:12px;}
 footer{
   margin-top:22px;
   text-align:center;
@@ -98,7 +96,7 @@ footer i:hover{color:#c33764;}
 </section>
 
 <footer>
-  This is created by <b>M Zia Anes</b><br><br>
+  This is created by <b>M Zia Anas</b><br><br>
   <a href="https://wa.me/919363645734" target="_blank"><i class="fab fa-whatsapp"></i></a>
   <a href="https://www.instagram.com/m_zia_anas" target="_blank"><i class="fab fa-instagram"></i></a>
   <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank"><i class="fab fa-linkedin"></i></a>
@@ -121,7 +119,7 @@ let appState={name:"",semester:0};
 /* GRADE POINTS */
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
 
-/* R2021 CSE – SEMESTER 1 ONLY (REAL DATA) */
+/* SEMESTER 1 – R2021 CSE (TAMIL INCLUDED) */
 const curriculum={
   1:[
     {code:"HS3152",name:"Professional English – I",credits:3},
@@ -129,6 +127,7 @@ const curriculum={
     {code:"PH3151",name:"Engineering Physics",credits:3},
     {code:"CY3151",name:"Engineering Chemistry",credits:3},
     {code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
+    {code:"GE3152",name:"Heritage of Tamils",credits:1},
     {code:"GE3171",name:"Problem Solving and Python Programming Laboratory",credits:2},
     {code:"BS3171",name:"Physics and Chemistry Laboratory",credits:2},
     {code:"GE3172",name:"English Laboratory",credits:1}
@@ -148,7 +147,6 @@ function startGPA(){
     alert("This semester will be added next.");
     return;
   }
-
   loadSemester();
 }
 
@@ -200,3 +198,4 @@ showPage("page-welcome");
 
 </body>
 </html>
+
