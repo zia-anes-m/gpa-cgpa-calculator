@@ -5,7 +5,6 @@
 <title>GPA & CGPA Calculator - AU R2021</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Font Awesome for real app icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -21,50 +20,28 @@ body{
 .card{
   background:#fff;
   width:95%;
-  max-width:520px;
+  max-width:560px;
   padding:25px;
   border-radius:14px;
   box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
-h1{
-  text-align:center;
-  color:#1d2671;
-  margin-bottom:6px;
-}
-.subtitle{
-  text-align:center;
-  font-size:14px;
-  color:#555;
-}
-label{
-  display:block;
-  margin-top:14px;
-  font-weight:600;
-}
-input,select{
-  width:100%;
-  padding:10px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
+h1{text-align:center;color:#1d2671;}
+.subtitle{text-align:center;font-size:14px;color:#555;}
+label{display:block;margin-top:14px;font-weight:600;}
+select,input{
+  width:100%;padding:10px;margin-top:6px;
+  border-radius:8px;border:1px solid #ccc;
 }
 button{
-  width:100%;
-  margin-top:20px;
-  padding:12px;
-  background:#1d2671;
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  font-weight:bold;
+  width:100%;margin-top:20px;padding:12px;
+  background:#1d2671;color:#fff;
+  border:none;border-radius:10px;
+  font-size:16px;font-weight:bold;
   cursor:pointer;
 }
-button:hover{
-  background:#162057;
-}
-.page{
-  display:none;
+.page{display:none;}
+.subject{
+  margin-top:12px;
 }
 footer{
   margin-top:22px;
@@ -72,19 +49,12 @@ footer{
   font-size:13px;
   color:#666;
 }
-footer a{
-  margin:0 8px;
-  text-decoration:none;
-}
 footer i{
   font-size:22px;
+  margin:0 8px;
   color:#1d2671;
-  transition:transform .2s,color .2s;
 }
-footer i:hover{
-  color:#c33764;
-  transform:scale(1.2);
-}
+footer i:hover{color:#c33764;}
 </style>
 </head>
 
@@ -92,99 +62,139 @@ footer i:hover{
 
 <div class="card">
 
-  <!-- PAGE 1 : WELCOME -->
-  <section id="page-welcome" class="page">
-    <h1>GPA & CGPA Calculator</h1>
-    <div class="subtitle">
-      Computer Science and Engineering<br>
-      Anna University – Regulation 2021
-    </div>
+<!-- PAGE 1 -->
+<section id="page-welcome" class="page">
+  <h1>GPA & CGPA Calculator</h1>
+  <div class="subtitle">
+    Computer Science and Engineering<br>
+    Anna University – Regulation 2021
+  </div>
 
-    <label>Student Name</label>
-    <input id="studentName" placeholder="Enter your name">
+  <label>Student Name</label>
+  <input id="studentName" placeholder="Enter your name">
 
-    <label>Number of Semesters Completed</label>
-    <select id="semCompleted">
-      <option value="">Select (1–8)</option>
-      <option>1</option><option>2</option><option>3</option>
-      <option>4</option><option>5</option><option>6</option>
-      <option>7</option><option>8</option>
-    </select>
+  <label>Number of Semesters Completed</label>
+  <select id="semCompleted">
+    <option value="">Select (1–8)</option>
+    <option>1</option><option>2</option><option>3</option>
+    <option>4</option><option>5</option><option>6</option>
+    <option>7</option><option>8</option>
+  </select>
 
-    <button onclick="handleWelcome()">Continue</button>
-  </section>
+  <button onclick="startGPA()">Continue</button>
+</section>
 
-  <!-- PAGE 2 : SEMESTER PAGE (TEMP, NEXT STEP WILL EXPAND) -->
-  <section id="page-semester" class="page">
-    <h1>Semester GPA</h1>
-    <p id="welcomeText"></p>
+<!-- PAGE 2 -->
+<section id="page-gpa" class="page">
+  <h1 id="semTitle"></h1>
+  <p id="userText"></p>
 
-    <button onclick="showPage('page-welcome')">Back to Menu</button>
-  </section>
+  <div id="subjects"></div>
 
-  <!-- FOOTER : SHOWN ON ALL PAGES -->
-  <footer>
-    This is created by <b>M Zia Anes</b><br><br>
+  <button onclick="calculateGPA()">Calculate GPA</button>
+  <div id="result"></div>
 
-    <a href="https://wa.me/919363645734" target="_blank" title="WhatsApp">
-      <i class="fab fa-whatsapp"></i>
-    </a>
+  <button onclick="showPage('page-welcome')">Back to Menu</button>
+</section>
 
-    <a href="https://www.instagram.com/m_zia_anas" target="_blank" title="Instagram">
-      <i class="fab fa-instagram"></i>
-    </a>
-
-    <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank" title="LinkedIn">
-      <i class="fab fa-linkedin"></i>
-    </a>
-
-    <a href="mailto:ziaanesm@gmail.com" title="Email">
-      <i class="fas fa-envelope"></i>
-    </a>
-
-    <a href="tel:+919363645734" title="Call">
-      <i class="fas fa-phone"></i>
-    </a>
-  </footer>
+<footer>
+  This is created by <b>M Zia Anes</b><br><br>
+  <a href="https://wa.me/919363645734" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <a href="https://www.instagram.com/m_zia_anas" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank"><i class="fab fa-linkedin"></i></a>
+  <a href="mailto:ziaanesm@gmail.com"><i class="fas fa-envelope"></i></a>
+  <a href="tel:+919363645734"><i class="fas fa-phone"></i></a>
+</footer>
 
 </div>
 
 <script>
-/* ---------- SPA CORE ---------- */
+/* SPA CORE */
 function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>{
-    p.style.display="none";
-  });
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
   document.getElementById(id).style.display="block";
 }
 
-/* ---------- STATE ---------- */
-let appState={
-  name:"",
-  semestersCompleted:0
+/* STATE */
+let appState={name:"",semester:0};
+
+/* GRADE POINTS */
+const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
+
+/* R2021 CSE – SEMESTER 1 ONLY (REAL DATA) */
+const curriculum={
+  1:[
+    {code:"HS3152",name:"Professional English – I",credits:3},
+    {code:"MA3151",name:"Matrices and Calculus",credits:4},
+    {code:"PH3151",name:"Engineering Physics",credits:3},
+    {code:"CY3151",name:"Engineering Chemistry",credits:3},
+    {code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
+    {code:"GE3171",name:"Problem Solving and Python Programming Laboratory",credits:2},
+    {code:"BS3171",name:"Physics and Chemistry Laboratory",credits:2},
+    {code:"GE3172",name:"English Laboratory",credits:1}
+  ]
 };
 
-/* ---------- PAGE 1 LOGIC ---------- */
-function handleWelcome(){
+/* START GPA */
+function startGPA(){
   const name=document.getElementById("studentName").value.trim();
   const sem=document.getElementById("semCompleted").value;
+  if(!name||!sem){alert("Enter name and semester");return;}
 
-  if(!name || !sem){
-    alert("Please enter name and semesters completed.");
+  appState.name=name;
+  appState.semester=parseInt(sem);
+
+  if(!curriculum[appState.semester]){
+    alert("This semester will be added next.");
     return;
   }
 
-  appState.name=name;
-  appState.semestersCompleted=parseInt(sem);
-
-  document.getElementById("welcomeText").innerText=
-    `Hello ${name}, you have completed ${sem} semester(s). 
-     Semester-wise GPA calculation will appear here next.`;
-
-  showPage("page-semester");
+  loadSemester();
 }
 
-/* ---------- INIT ---------- */
+/* LOAD SUBJECTS */
+function loadSemester(){
+  document.getElementById("semTitle").innerText=
+    `Semester ${appState.semester} GPA Calculator`;
+  document.getElementById("userText").innerText=
+    `Hello ${appState.name}, enter your grades below`;
+
+  const box=document.getElementById("subjects");
+  box.innerHTML="";
+
+  curriculum[appState.semester].forEach(s=>{
+    box.innerHTML+=`
+      <div class="subject">
+        <label>${s.code} – ${s.name} (${s.credits} credits)</label>
+        <select id="${s.code}">
+          <option value="">Select Grade</option>
+          <option>O</option><option>A+</option><option>A</option>
+          <option>B+</option><option>B</option><option>C</option><option>RA</option>
+        </select>
+      </div>`;
+  });
+
+  document.getElementById("result").innerHTML="";
+  showPage("page-gpa");
+}
+
+/* CALCULATE GPA */
+function calculateGPA(){
+  let totalCredits=0,totalPoints=0;
+
+  for(const s of curriculum[appState.semester]){
+    const g=document.getElementById(s.code).value;
+    if(!g){alert("Select all grades");return;}
+    totalCredits+=s.credits;
+    totalPoints+=gradePoints[g]*s.credits;
+  }
+
+  const gpa=(totalPoints/totalCredits).toFixed(2);
+  document.getElementById("result").innerHTML=
+    `<h3>Your Semester ${appState.semester} GPA is ${gpa}</h3>`;
+}
+
+/* INIT */
 showPage("page-welcome");
 </script>
 
