@@ -11,42 +11,73 @@
 body{
   margin:0;
   font-family:Segoe UI, sans-serif;
-  background:linear-gradient(120deg,#1d2671,#c33764);
+
+  /* YOUR IMAGE BACKGROUND */
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
 }
+
+/* overlay for readability */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  z-index:-1;
+}
+
 .card{
-  background:#fff;
+  background:#ffffffee;
   width:95%;
   max-width:560px;
   padding:25px;
   border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
 }
+
 h1{text-align:center;color:#1d2671;}
 .subtitle{text-align:center;font-size:14px;color:#555;}
+
 label{display:block;margin-top:14px;font-weight:600;}
 select,input{
-  width:100%;padding:10px;margin-top:6px;
-  border-radius:8px;border:1px solid #ccc;
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
+
 button{
-  width:100%;margin-top:20px;padding:12px;
-  background:#1d2671;color:#fff;
-  border:none;border-radius:10px;
-  font-size:16px;font-weight:bold;
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  background:#1d2671;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
   cursor:pointer;
 }
+
 .page{display:none;}
 .subject{margin-top:12px;}
+
 footer{
   margin-top:22px;
   text-align:center;
   font-size:13px;
-  color:#666;
+  color:#444;
 }
+
 footer i{
   font-size:22px;
   margin:0 8px;
@@ -96,7 +127,7 @@ footer i:hover{color:#c33764;}
 </section>
 
 <footer>
-  This is created by <b>M Zia Anas</b><br><br>
+  This is created by <b>M Zia Anes</b><br><br>
   <a href="https://wa.me/919363645734" target="_blank"><i class="fab fa-whatsapp"></i></a>
   <a href="https://www.instagram.com/m_zia_anas" target="_blank"><i class="fab fa-instagram"></i></a>
   <a href="https://www.linkedin.com/in/zia-anes-m" target="_blank"><i class="fab fa-linkedin"></i></a>
@@ -107,19 +138,15 @@ footer i:hover{color:#c33764;}
 </div>
 
 <script>
-/* SPA CORE */
 function showPage(id){
   document.querySelectorAll(".page").forEach(p=>p.style.display="none");
   document.getElementById(id).style.display="block";
 }
 
-/* STATE */
 let appState={name:"",semester:0};
 
-/* GRADE POINTS */
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
 
-/* SEMESTER 1 – R2021 CSE (TAMIL INCLUDED) */
 const curriculum={
   1:[
     {code:"HS3152",name:"Professional English – I",credits:3},
@@ -134,15 +161,12 @@ const curriculum={
   ]
 };
 
-/* START GPA */
 function startGPA(){
   const name=document.getElementById("studentName").value.trim();
   const sem=document.getElementById("semCompleted").value;
   if(!name||!sem){alert("Enter name and semester");return;}
-
   appState.name=name;
   appState.semester=parseInt(sem);
-
   if(!curriculum[appState.semester]){
     alert("This semester will be added next.");
     return;
@@ -150,7 +174,6 @@ function startGPA(){
   loadSemester();
 }
 
-/* LOAD SUBJECTS */
 function loadSemester(){
   document.getElementById("semTitle").innerText=
     `Semester ${appState.semester} GPA Calculator`;
@@ -176,23 +199,19 @@ function loadSemester(){
   showPage("page-gpa");
 }
 
-/* CALCULATE GPA */
 function calculateGPA(){
   let totalCredits=0,totalPoints=0;
-
   for(const s of curriculum[appState.semester]){
     const g=document.getElementById(s.code).value;
     if(!g){alert("Select all grades");return;}
     totalCredits+=s.credits;
     totalPoints+=gradePoints[g]*s.credits;
   }
-
   const gpa=(totalPoints/totalCredits).toFixed(2);
   document.getElementById("result").innerHTML=
     `<h3>Your Semester ${appState.semester} GPA is ${gpa}</h3>`;
 }
 
-/* INIT */
 showPage("page-welcome");
 </script>
 
