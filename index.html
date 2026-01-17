@@ -11,55 +11,43 @@
 body{
   margin:0;
   font-family:Segoe UI, sans-serif;
-  background-image:url("background.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
+  background:#ffffff;
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
 }
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  z-index:-1;
-}
 .card{
-  background:#ffffffee;
+  background:#fff;
   width:95%;
-  max-width:580px;
+  max-width:600px;
   padding:25px;
-  border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.35);
+  border-radius:10px;
+  box-shadow:0 8px 25px rgba(0,0,0,.1);
 }
 h1{text-align:center;color:#1d2671;}
 .subtitle{text-align:center;font-size:14px;color:#555;}
 label{display:block;margin-top:14px;font-weight:600;}
 select,input{
   width:100%;padding:10px;margin-top:6px;
-  border-radius:8px;border:1px solid #ccc;
+  border-radius:6px;border:1px solid #ccc;
 }
 button{
   width:100%;margin-top:18px;padding:12px;
   background:#1d2671;color:#fff;
-  border:none;border-radius:10px;
+  border:none;border-radius:8px;
   font-size:16px;font-weight:bold;
   cursor:pointer;
 }
 .page{display:none;}
-.subject{margin-top:12px;}
+.subject{margin-top:10px;}
 footer{
-  margin-top:22px;
+  margin-top:20px;
   text-align:center;
   font-size:13px;
   color:#444;
 }
 footer a{margin:0 8px;text-decoration:none;}
-/* BRAND COLOURS */
 .fa-whatsapp{color:#25D366;}
 .fa-instagram{
   background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
@@ -136,40 +124,50 @@ function showPage(id){
   document.getElementById(id).style.display="block";
 }
 
-let appState={name:"",semester:0};
+let appState={
+  name:"",
+  semester:0,
+  gpas:{}   // store calculated GPAs
+};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
 const semesterCredits={1:22,2:26,3:23};
 
 const curriculum={
-  1:[{code:"HS3152",name:"Professional English – I",credits:3},
-     {code:"MA3151",name:"Matrices and Calculus",credits:4},
-     {code:"PH3151",name:"Engineering Physics",credits:3},
-     {code:"CY3151",name:"Engineering Chemistry",credits:3},
-     {code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
-     {code:"GE3152",name:"Heritage of Tamils",credits:1},
-     {code:"GE3171",name:"PSPP Lab",credits:2},
-     {code:"BS3171",name:"Physics & Chemistry Lab",credits:2},
-     {code:"GE3172",name:"English Lab",credits:1}],
-  2:[{code:"HS3252",name:"Professional English – II",credits:2},
-     {code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
-     {code:"PH3256",name:"Physics for Information Science",credits:3},
-     {code:"BE3251",name:"BEEE",credits:3},
-     {code:"GE3251",name:"Engineering Graphics",credits:4},
-     {code:"CS3251",name:"Programming in C",credits:3},
-     {code:"GE3252",name:"Tamils and Technology",credits:1},
-     {code:"GE3271",name:"Engineering Practices Lab",credits:2},
-     {code:"CS3271",name:"C Programming Lab",credits:2},
-     {code:"GE3272",name:"Communication Lab",credits:2}],
-  3:[{code:"MA3354",name:"Discrete Mathematics",credits:4},
-     {code:"CS3351",name:"DPCO",credits:4},
-     {code:"CS3352",name:"Foundations of Data Science",credits:3},
-     {code:"CS3301",name:"Data Structures",credits:3},
-     {code:"CS3391",name:"OOPS",credits:3},
-     {code:"CS3311",name:"DS Lab",credits:1.5},
-     {code:"CS3381",name:"OOPS Lab",credits:1.5},
-     {code:"CS3361",name:"Data Science Lab",credits:2},
-     {code:"GE3361",name:"Professional Development",credits:1}]
+  1:[
+    {code:"HS3152",name:"Professional English – I",credits:3},
+    {code:"MA3151",name:"Matrices and Calculus",credits:4},
+    {code:"PH3151",name:"Engineering Physics",credits:3},
+    {code:"CY3151",name:"Engineering Chemistry",credits:3},
+    {code:"GE3151",name:"PSPP",credits:3},
+    {code:"GE3152",name:"Heritage of Tamils",credits:1},
+    {code:"GE3171",name:"PSPP Lab",credits:2},
+    {code:"BS3171",name:"Physics & Chemistry Lab",credits:2},
+    {code:"GE3172",name:"English Lab",credits:1}
+  ],
+  2:[
+    {code:"HS3252",name:"Professional English – II",credits:2},
+    {code:"MA3251",name:"Statistics & Numerical Methods",credits:4},
+    {code:"PH3256",name:"Physics for IS",credits:3},
+    {code:"BE3251",name:"BEEE",credits:3},
+    {code:"GE3251",name:"Engineering Graphics",credits:4},
+    {code:"CS3251",name:"Programming in C",credits:3},
+    {code:"GE3252",name:"Tamils & Technology",credits:1},
+    {code:"GE3271",name:"Engineering Practices Lab",credits:2},
+    {code:"CS3271",name:"C Programming Lab",credits:2},
+    {code:"GE3272",name:"Communication Lab",credits:2}
+  ],
+  3:[
+    {code:"MA3354",name:"Discrete Mathematics",credits:4},
+    {code:"CS3351",name:"DPCO",credits:4},
+    {code:"CS3352",name:"Foundations of Data Science",credits:3},
+    {code:"CS3301",name:"Data Structures",credits:3},
+    {code:"CS3391",name:"OOPS",credits:3},
+    {code:"CS3311",name:"DS Lab",credits:1.5},
+    {code:"CS3381",name:"OOPS Lab",credits:1.5},
+    {code:"CS3361",name:"DS Lab",credits:2},
+    {code:"GE3361",name:"Professional Development",credits:1}
+  ]
 };
 
 function startGPA(){
@@ -188,7 +186,7 @@ function loadSemester(){
   box.innerHTML="";
   curriculum[appState.semester].forEach(s=>{
     box.innerHTML+=`
-      <label>${s.code} – ${s.name} (${s.credits} credits)</label>
+      <label>${s.code} – ${s.name} (${s.credits})</label>
       <select id="${s.code}">
         <option value="">Grade</option>
         <option>O</option><option>A+</option><option>A</option>
@@ -208,8 +206,9 @@ function calculateGPA(){
     tc+=s.credits;
     tp+=gradePoints[g]*s.credits;
   });
-  document.getElementById("result").innerHTML=
-    `<h3>GPA: ${(tp/tc).toFixed(2)}</h3>`;
+  const gpa=(tp/tc).toFixed(2);
+  appState.gpas[appState.semester]=parseFloat(gpa);
+  document.getElementById("result").innerHTML=`<h3>GPA: ${gpa}</h3>`;
 }
 
 function showCGPAPage(){
@@ -217,7 +216,8 @@ function showCGPAPage(){
   for(let i=1;i<=appState.semester;i++){
     html+=`
       <label>Semester ${i} GPA</label>
-      <input type="number" step="0.01" id="gpa${i}">`;
+      <input type="number" step="0.01" id="gpa${i}"
+      value="${appState.gpas[i] ?? ""}">`;
   }
   document.getElementById("cgpaInputs").innerHTML=html;
   showPage("page-cgpa");
@@ -240,3 +240,4 @@ showPage("page-welcome");
 
 </body>
 </html>
+
