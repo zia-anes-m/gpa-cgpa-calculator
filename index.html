@@ -1,342 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>GPA & CGPA Calculator | Anna University R2021</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GPA & CGPA Calculator – AU R2021 (CSE)</title>
 
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background:#f4f6fb;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+  color: #222;
 }
-
-.card{
-  background:#fff;
-  width:95%;
-  max-width:750px;
-  padding:30px;
-  border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.12);
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
 }
-
-.header{
-  text-align:center;
-  margin-bottom:25px;
+h1, h2 {
+  text-align: center;
 }
-.header h1{
-  margin:0;
-  font-size:28px;
-  color:#1d2671;
+.card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
 }
-.header p{
-  margin:6px 0 0;
-  color:#555;
-  font-size:14px;
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
 }
-
-label{
-  display:block;
-  margin-top:16px;
-  font-weight:600;
-  color:#333;
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
 }
-
-select,input{
-  width:100%;
-  padding:11px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
-
-button{
-  width:100%;
-  margin-top:22px;
-  padding:13px;
-  background:linear-gradient(135deg,#1d2671,#3f51b5);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
+button:hover {
+  background: #1e40af;
 }
-
-button.secondary{
-  background:#e0e3f5;
-  color:#1d2671;
+.hidden {
+  display: none;
 }
-
-.page{display:none}
-
-.subject{
-  padding:10px;
-  border-radius:8px;
-  background:#f7f8ff;
-  margin-top:12px;
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
 }
-
-.result{
-  text-align:center;
-  margin-top:20px;
-  font-size:20px;
-  font-weight:bold;
-  color:#1d2671;
+.footer a {
+  margin: 0 8px;
+  text-decoration: none;
 }
-
-footer{
-  text-align:center;
-  font-size:13px;
-  color:#444;
-  margin-top:30px;
-}
-
-footer i{
-  font-size:22px;
-  margin:0 8px;
-}
-
-.fa-whatsapp{color:#25D366}
-.fa-instagram{
-  background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.fa-linkedin{color:#0A66C2}
-.fa-phone{color:#2E7D32}
-.fa-envelope{color:#D93025}
 </style>
 </head>
 
 <body>
-<div class="card">
+<div class="container">
 
-<!-- NETLIFY TRACKING FORM (DO NOT REMOVE) -->
-<form name="user-tracking" method="POST" data-netlify="true" hidden>
-  <input type="hidden" name="form-name" value="user-tracking">
-  <input type="hidden" name="name">
-  <input type="hidden" name="email">
-</form>
-
-<section id="page-welcome" class="page">
-  <div class="header">
-    <h1>GPA & CGPA Calculator</h1>
-    <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
-  </div>
-
-  <label>Student Name</label>
-  <input id="studentName" placeholder="Enter your name">
-
-  <label>Email Address</label>
-  <input id="studentEmail" type="email" placeholder="Enter your email">
-
-  <p style="font-size:12px;color:#666;margin-top:6px;">
-    Your name and email are collected only for usage tracking. No data is shared.
+<!-- WELCOME -->
+<div id="page-welcome" class="card">
+  <h1>GPA & CGPA Calculator</h1>
+  <p style="text-align:center">
+    Computer Science & Engineering<br/>
+    Anna University – Regulation 2021
   </p>
 
-  <label>Number of Semesters Completed</label>
-  <select id="semCompleted">
+  <label>Name</label>
+  <input id="studentName" placeholder="Enter your name" />
+
+  <label>Email</label>
+  <input id="studentEmail" type="email" placeholder="Enter your email" />
+
+  <label>Number of semesters completed</label>
+  <select id="semesterCount">
     <option value="">Select</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
   </select>
 
-  <button onclick="startGPA()">Continue</button>
-</section>
+  <button onclick="startApp()">Continue</button>
+</div>
 
-<section id="page-gpa" class="page">
-  <div class="header">
-    <h1 id="semTitle"></h1>
-    <p id="userText"></p>
-  </div>
-
+<!-- GPA PAGE -->
+<div id="page-gpa" class="card hidden">
+  <h2 id="gpa-title"></h2>
   <div id="subjects"></div>
-
   <button onclick="calculateGPA()">Calculate GPA</button>
-  <div id="result" class="result"></div>
+  <h3 id="gpa-result"></h3>
+  <button id="cgpaBtn" class="hidden" onclick="goToCGPA()">Calculate CGPA</button>
+  <button onclick="backToMenu()">Back to Menu</button>
+</div>
 
-  <button id="cgpaBtn" style="display:none" onclick="showCGPAPage()">Calculate CGPA</button>
-  <button class="secondary" onclick="showPage('page-welcome')">Back to Menu</button>
-</section>
-
-<section id="page-cgpa" class="page">
-  <div class="header">
-    <h1>CGPA Calculator</h1>
-  </div>
-
+<!-- CGPA PAGE -->
+<div id="page-cgpa" class="card hidden">
+  <h2>CGPA Calculation</h2>
   <div id="cgpaInputs"></div>
-
   <button onclick="calculateCGPA()">Calculate CGPA</button>
-  <div id="cgpaResult" class="result"></div>
+  <h3 id="cgpa-result"></h3>
+  <button onclick="backToMenu()">Back to Menu</button>
+</div>
 
-  <button class="secondary" onclick="showPage('page-welcome')">Back to Menu</button>
-</section>
-
-<footer>
-  This is created by <b>M Zia Anes</b><br><br>
-  <a href="https://wa.me/919363645734"><i class="fab fa-whatsapp"></i></a>
-  <a href="https://www.instagram.com/m_zia_anas"><i class="fab fa-instagram"></i></a>
-  <a href="https://www.linkedin.com/in/zia-anes-m"><i class="fab fa-linkedin"></i></a>
-  <a href="mailto:ziaanesm@gmail.com"><i class="fas fa-envelope"></i></a>
-  <a href="tel:+919363645734"><i class="fas fa-phone"></i></a>
-</footer>
+<div class="footer">
+  This is created by <strong>Zia Anas</strong><br/><br/>
+  <a href="https://wa.me/919363645734" target="_blank">WhatsApp</a>
+  <a href="https://instagram.com/m_zia_anas" target="_blank">Instagram</a>
+  <a href="https://linkedin.com/in/zia-anes-m" target="_blank">LinkedIn</a>
+  <a href="tel:+919363645734">Call</a>
+</div>
 
 </div>
 
 <script>
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-  document.getElementById(id).style.display="block";
-}
+/* ================= CONFIG ================= */
 
-function trackUser(name,email){
-  const data=new FormData();
-  data.append("form-name","user-tracking");
-  data.append("name",name);
-  data.append("email",email);
-  fetch("/",{method:"POST",body:data});
-}
+// 🔥 Your real Google Form submit URL:
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/13G9VlVwCaFFxzv--nK_RYLLyAFctqsxvm4JjzZxCZuQ/formResponse";
 
-let appState={name:"",semester:0,gpas:{}};
-
-const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
-const semesterCredits={1:22,2:26,3:23,4:22};
-
-const curriculum={
-1:[
-{code:"HS3152",name:"Professional English I",credits:3},
-{code:"MA3151",name:"Matrices and Calculus",credits:4},
-{code:"PH3151",name:"Engineering Physics",credits:3},
-{code:"CY3151",name:"Engineering Chemistry",credits:3},
-{code:"GE3151",name:"Problem Solving and Python Programming",credits:3},
-{code:"GE3152",name:"Heritage of Tamils",credits:1},
-{code:"GE3171",name:"Problem Solving and Python Programming Laboratory",credits:2},
-{code:"BS3171",name:"Physics and Chemistry Laboratory",credits:2},
-{code:"GE3172",name:"English Laboratory",credits:1}
-],
-2:[
-{code:"HS3252",name:"Professional English II",credits:2},
-{code:"MA3251",name:"Statistics and Numerical Methods",credits:4},
-{code:"PH3256",name:"Physics for Information Science",credits:3},
-{code:"BE3251",name:"Basic Electrical and Electronics Engineering",credits:3},
-{code:"GE3251",name:"Engineering Graphics",credits:4},
-{code:"CS3251",name:"Programming in C",credits:3},
-{code:"GE3252",name:"Tamils and Technology",credits:1},
-{code:"GE3271",name:"Engineering Practices Laboratory",credits:2},
-{code:"CS3271",name:"Programming in C Laboratory",credits:2},
-{code:"GE3272",name:"Communication Laboratory",credits:2}
-],
-3:[
-{code:"MA3354",name:"Discrete Mathematics",credits:4},
-{code:"CS3351",name:"Digital Principles and Computer Organization",credits:4},
-{code:"CS3352",name:"Foundations of Data Science",credits:3},
-{code:"CS3301",name:"Data Structures",credits:3},
-{code:"CS3391",name:"Object Oriented Programming",credits:3},
-{code:"CS3311",name:"Data Structures Laboratory",credits:1.5},
-{code:"CS3381",name:"Object Oriented Programming Laboratory",credits:1.5},
-{code:"CS3361",name:"Data Science Laboratory",credits:2},
-{code:"GE3361",name:"Professional Development",credits:1}
-],
-4:[
-{code:"CS3452",name:"Theory of Computation",credits:3},
-{code:"CS3491",name:"Artificial Intelligence and Machine Learning",credits:4},
-{code:"CS3492",name:"Database Management Systems",credits:3},
-{code:"CS3401",name:"Algorithms",credits:4},
-{code:"CS3451",name:"Introduction to Operating Systems",credits:3},
-{code:"GE3451",name:"Environmental Sciences and Sustainability",credits:2},
-{code:"CS3461",name:"Operating Systems Laboratory",credits:1.5},
-{code:"CS3481",name:"Database Management Systems Laboratory",credits:1.5}
-]
+const semesters = {
+  1: {
+    credits: 22,
+    subjects: [
+      ["HS3151 Professional English – I", 2],
+      ["MA3151 Matrices and Calculus", 4],
+      ["PH3151 Engineering Physics", 3],
+      ["CY3151 Engineering Chemistry", 3],
+      ["GE3151 Problem Solving and Python Programming", 3],
+      ["GE3152 Engineering Graphics", 4],
+      ["GE3171 Problem Solving and Python Programming Laboratory", 2],
+      ["BS3171 Physics and Chemistry Laboratory", 1]
+    ]
+  },
+  2: {
+    credits: 26,
+    subjects: [
+      ["HS3252 Professional English – II", 2],
+      ["MA3251 Statistics and Numerical Methods", 4],
+      ["PH3256 Physics for Information Science", 3],
+      ["BE3251 Basic Electrical and Electronics Engineering", 3],
+      ["GE3251 Engineering Graphics", 4],
+      ["CS3251 Programming in C", 3],
+      ["GE3271 Engineering Practices Laboratory", 2],
+      ["CS3271 Programming in C Laboratory", 2],
+      ["GE3272 Communication Laboratory / Foreign Language", 2],
+      ["GE3252 Tamil / Heritage of Tamils", 1]
+    ]
+  },
+  3: {
+    credits: 23,
+    subjects: [
+      ["MA3354 Discrete Mathematics", 4],
+      ["CS3351 Digital Principles and Computer Organization", 4],
+      ["CS3352 Foundations of Data Science", 3],
+      ["CS3301 Data Structures", 3],
+      ["CS3391 Object Oriented Programming", 3],
+      ["CS3311 Data Structures Laboratory", 1.5],
+      ["CS3381 Object Oriented Programming Laboratory", 1.5],
+      ["CS3361 Data Science Laboratory", 2],
+      ["GE3361 Professional Development", 1]
+    ]
+  },
+  4: {
+    credits: 22,
+    subjects: [
+      ["CS3452 Theory of Computation", 3],
+      ["CS3491 Artificial Intelligence and Machine Learning", 4],
+      ["CS3492 Database Management Systems", 3],
+      ["CS3401 Algorithms", 4],
+      ["CS3451 Introduction to Operating Systems", 3],
+      ["GE3451 Environmental Sciences and Sustainability", 2],
+      ["CS3461 Operating Systems Laboratory", 1.5],
+      ["CS3481 Database Management Systems Laboratory", 1.5]
+    ]
+  }
 };
 
-function startGPA(){
-  const n=document.getElementById("studentName").value.trim();
-  const e=document.getElementById("studentEmail").value.trim();
-  const s=document.getElementById("semCompleted").value;
+const gradeMap = { O:10, A+:9, A:8, B+:7, B:6, C:5, U:0 };
 
-  if(!n||!e||!s){
-    alert("Please enter Name, Email and Semester");
+let appState = { name:"", email:"", completed:0, gpas:{} };
+
+/* ================= FUNCTIONS ================= */
+
+function sendUsage(name, email) {
+  const data = new URLSearchParams();
+  // 🔥 Your entry field IDs
+  data.append("entry.782499053", name);
+  data.append("entry.1195044287", email);
+
+  fetch(GOOGLE_FORM_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+}
+
+function startApp() {
+  const name = studentName.value.trim();
+  const email = studentEmail.value.trim();
+  const count = semesterCount.value;
+
+  if (!name || !email || !count) {
+    alert("Fill all fields");
     return;
   }
 
-  trackUser(n,e);
-
-  appState.name=n;
-  appState.semester=parseInt(s);
-  loadSemester();
+  appState = { name, email, completed: +count, gpas:{} };
+  sendUsage(name, email);
+  loadSemester(1);
 }
 
-function loadSemester(){
-  document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
-  document.getElementById("userText").innerText=`Hello ${appState.name}`;
-  document.getElementById("result").innerHTML="";
-  const box=document.getElementById("subjects");
-  box.innerHTML="";
-  curriculum[appState.semester].forEach(sub=>{
-    box.innerHTML+=`
-      <div class="subject">
-        <label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
-        <select id="${sub.code}">
-          <option value="">Select Grade</option>
-          <option>O</option><option>A+</option><option>A</option>
-          <option>B+</option><option>B</option><option>C</option><option>RA</option>
-        </select>
-      </div>`;
+function loadSemester(sem) {
+  resetPages();
+  pageGPA.classList.remove("hidden");
+
+  // 🔴 Clear old GPA for this sem
+  appState.gpas[sem] = undefined;
+
+  gpaTitle.innerText = `Semester ${sem} GPA – ${appState.name}`;
+  subjects.innerHTML = "";
+  gpaResult.innerText = "";
+  cgpaBtn.classList.add("hidden");
+
+  semesters[sem].subjects.forEach((s, i) => {
+    subjects.innerHTML += `
+      <label>${s[0]} (${s[1]} credits)</label>
+      <select id="g${i}">
+        <option value="">Select grade</option>
+        <option>O</option><option>A+</option><option>A</option>
+        <option>B+</option><option>B</option><option>C</option><option>U</option>
+      </select>`;
   });
-  document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
-  showPage("page-gpa");
+
+  pageGPA.dataset.sem = sem;
 }
 
-function calculateGPA(){
-  let tc=0,tp=0;
-  for(const s of curriculum[appState.semester]){
-    const g=document.getElementById(s.code).value;
-    if(!g){alert("Please select all grades");return;}
-    tc+=s.credits;
-    tp+=gradePoints[g]*s.credits;
+function calculateGPA() {
+  const sem = pageGPA.dataset.sem;
+  let total = 0, credits = 0;
+
+  semesters[sem].subjects.forEach((s, i) => {
+    const g = document.getElementById("g"+i).value;
+    if (!g) return;
+    total += gradeMap[g] * s[1];
+    credits += s[1];
+  });
+
+  const gpa = (total / credits).toFixed(3);
+  appState.gpas[sem] = gpa;
+  gpaResult.innerText = `Semester ${sem} GPA: ${gpa}`;
+
+  if (sem < appState.completed) {
+    cgpaBtn.classList.remove("hidden");
+    cgpaBtn.onclick = () => loadSemester(sem+1);
+  } else {
+    cgpaBtn.classList.remove("hidden");
   }
-  const gpa=(tp/tc).toFixed(2);
-  appState.gpas[appState.semester]=parseFloat(gpa);
-  document.getElementById("result").innerText=`GPA : ${gpa}`;
 }
 
-function showCGPAPage(){
-  let html="";
-  for(let i=1;i<=appState.semester;i++){
-    html+=`
-      <label>Semester ${i} GPA</label>
-      <input type="number" step="0.01" id="gpa${i}" value="${appState.gpas[i]??""}">
-    `;
-  }
-  document.getElementById("cgpaInputs").innerHTML=html;
-  showPage("page-cgpa");
+function goToCGPA() {
+  resetPages();
+  pageCGPA.classList.remove("hidden");
+  cgpaInputs.innerHTML = "";
+
+  Object.keys(appState.gpas).forEach(s => {
+    cgpaInputs.innerHTML += `
+      <p>Semester ${s} GPA: ${appState.gpas[s]}</p>`;
+  });
 }
 
-function calculateCGPA(){
-  let total=0,credits=0;
-  for(let i=1;i<=appState.semester;i++){
-    const g=parseFloat(document.getElementById(`gpa${i}`).value);
-    if(isNaN(g)){alert("Please enter all GPAs");return;}
-    total+=g*semesterCredits[i];
-    credits+=semesterCredits[i];
-  }
-  document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
+function calculateCGPA() {
+  let total = 0, credits = 0;
+  Object.keys(appState.gpas).forEach(s => {
+    total += appState.gpas[s] * semesters[s].credits;
+    credits += semesters[s].credits;
+  });
+  cgpaResult.innerText =
+    `CGPA: ${(total/credits).toFixed(3)}`;
 }
 
-showPage("page-welcome");
+function backToMenu() {
+  resetPages();
+  pageWelcome.classList.remove("hidden");
+}
+
+function resetPages() {
+  pageWelcome.classList.add("hidden");
+  pageGPA.classList.add("hidden");
+  pageCGPA.classList.add("hidden");
+}
 </script>
 
 </body>
-</html> 
+</html>
