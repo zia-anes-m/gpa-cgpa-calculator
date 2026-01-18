@@ -194,22 +194,24 @@ function showPage(id){
   document.getElementById(id).style.display="block";
 }
 
-/* ===== GOOGLE FORM TRACKING (CLOUDFLARE SAFE) ===== */
-function trackUser(name, email) {
-  const formURL =
-    "https://docs.google.com/forms/d/13G9VlVwCaFFxzv--nK_RYLLyAFctqsxvm4JjzZxCZuQ/formResponse";
+/* ================= GOOGLE FORM TRACKING ================= */
+// REPLACE entry IDs ONLY if they change in future
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/13G9VlVwCaFFxzv--nK_RYLLyAFctqsxvm4JjzZxCZuQ/formResponse";
 
+function trackUser(name,email){
   const data = new URLSearchParams();
   data.append("entry.782499053", name);
   data.append("entry.1195044287", email);
 
-  fetch(formURL, {
+  fetch(GOOGLE_FORM_URL, {
     method: "POST",
     mode: "no-cors",
     body: data
   });
 }
 
+/* ================= APP STATE ================= */
 let appState={name:"",semester:0,gpas:{}};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
@@ -262,6 +264,7 @@ const curriculum={
 ]
 };
 
+/* ================= FUNCTIONS ================= */
 function startGPA(){
   const n=document.getElementById("studentName").value.trim();
   const e=document.getElementById("studentEmail").value.trim();
@@ -285,6 +288,7 @@ function loadSemester(){
   document.getElementById("result").innerHTML="";
   const box=document.getElementById("subjects");
   box.innerHTML="";
+
   curriculum[appState.semester].forEach(sub=>{
     box.innerHTML+=`
       <div class="subject">
@@ -296,6 +300,7 @@ function loadSemester(){
         </select>
       </div>`;
   });
+
   document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
   showPage("page-gpa");
 }
@@ -328,14 +333,15 @@ function showCGPAPage(){
 function calculateCGPA(){
   let total=0,credits=0;
   for(let i=1;i<=appState.semester;i++){
-    const g=parseFloat(document.getElementById(\`gpa\${i}\`).value);
+    const g=parseFloat(document.getElementById(`gpa${i}`).value);
     if(isNaN(g)){alert("Please enter all GPAs");return;}
     total+=g*semesterCredits[i];
     credits+=semesterCredits[i];
   }
-  document.getElementById("cgpaResult").innerText=\`CGPA : \${(total/credits).toFixed(2)}\`;
+  document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
 }
 
+/* ================= START APP ================= */
 showPage("page-welcome");
 </script>
 
