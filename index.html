@@ -97,7 +97,7 @@ button:hover {
   <div id="subjects"></div>
   <button onclick="calculateGPA()">Calculate GPA</button>
   <h3 id="gpa-result"></h3>
-  <button id="cgpaBtn" class="hidden" onclick="goToCGPA()">Calculate CGPA</button>
+  <button id="cgpaBtn" class="hidden">Next</button>
   <button onclick="backToMenu()">Back to Menu</button>
 </div>
 
@@ -121,184 +121,121 @@ button:hover {
 </div>
 
 <script>
-/* ================= CONFIG ================= */
+/* ===== DOM REFERENCES (THIS WAS MISSING BEFORE) ===== */
+const pageWelcome = document.getElementById("page-welcome");
+const pageGPA = document.getElementById("page-gpa");
+const pageCGPA = document.getElementById("page-cgpa");
+const gpaTitle = document.getElementById("gpa-title");
+const subjects = document.getElementById("subjects");
+const gpaResult = document.getElementById("gpa-result");
+const cgpaBtn = document.getElementById("cgpaBtn");
+const cgpaInputs = document.getElementById("cgpaInputs");
+const cgpaResult = document.getElementById("cgpa-result");
 
-// 🔥 Your real Google Form submit URL:
+/* ===== GOOGLE FORM CONFIG (CORRECT FORMAT) ===== */
 const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/e/13G9VlVwCaFFxzv--nK_RYLLyAFctqsxvm4JjzZxCZuQ/formResponse";
+  "https://docs.google.com/forms/d/13G9VlVwCaFFxzv--nK_RYLLyAFctqsxvm4JjzZxCZuQ/formResponse";
 
-const semesters = {
-  1: {
-    credits: 22,
-    subjects: [
-      ["HS3151 Professional English – I", 2],
-      ["MA3151 Matrices and Calculus", 4],
-      ["PH3151 Engineering Physics", 3],
-      ["CY3151 Engineering Chemistry", 3],
-      ["GE3151 Problem Solving and Python Programming", 3],
-      ["GE3152 Engineering Graphics", 4],
-      ["GE3171 Problem Solving and Python Programming Laboratory", 2],
-      ["BS3171 Physics and Chemistry Laboratory", 1]
-    ]
-  },
-  2: {
-    credits: 26,
-    subjects: [
-      ["HS3252 Professional English – II", 2],
-      ["MA3251 Statistics and Numerical Methods", 4],
-      ["PH3256 Physics for Information Science", 3],
-      ["BE3251 Basic Electrical and Electronics Engineering", 3],
-      ["GE3251 Engineering Graphics", 4],
-      ["CS3251 Programming in C", 3],
-      ["GE3271 Engineering Practices Laboratory", 2],
-      ["CS3271 Programming in C Laboratory", 2],
-      ["GE3272 Communication Laboratory / Foreign Language", 2],
-      ["GE3252 Tamil / Heritage of Tamils", 1]
-    ]
-  },
-  3: {
-    credits: 23,
-    subjects: [
-      ["MA3354 Discrete Mathematics", 4],
-      ["CS3351 Digital Principles and Computer Organization", 4],
-      ["CS3352 Foundations of Data Science", 3],
-      ["CS3301 Data Structures", 3],
-      ["CS3391 Object Oriented Programming", 3],
-      ["CS3311 Data Structures Laboratory", 1.5],
-      ["CS3381 Object Oriented Programming Laboratory", 1.5],
-      ["CS3361 Data Science Laboratory", 2],
-      ["GE3361 Professional Development", 1]
-    ]
-  },
-  4: {
-    credits: 22,
-    subjects: [
-      ["CS3452 Theory of Computation", 3],
-      ["CS3491 Artificial Intelligence and Machine Learning", 4],
-      ["CS3492 Database Management Systems", 3],
-      ["CS3401 Algorithms", 4],
-      ["CS3451 Introduction to Operating Systems", 3],
-      ["GE3451 Environmental Sciences and Sustainability", 2],
-      ["CS3461 Operating Systems Laboratory", 1.5],
-      ["CS3481 Database Management Systems Laboratory", 1.5]
-    ]
-  }
-};
-
+/* ===== DATA ===== */
 const gradeMap = { O:10, A+:9, A:8, B+:7, B:6, C:5, U:0 };
 
-let appState = { name:"", email:"", completed:0, gpas:{} };
+const semesters = {
+  1:{credits:22,subjects:[
+    ["HS3151 Professional English – I",2],
+    ["MA3151 Matrices and Calculus",4],
+    ["PH3151 Engineering Physics",3],
+    ["CY3151 Engineering Chemistry",3],
+    ["GE3151 Python Programming",3],
+    ["GE3152 Engineering Graphics",4],
+    ["GE3171 Python Lab",2],
+    ["BS3171 Physics & Chemistry Lab",1]
+  ]},
+  2:{credits:26,subjects:[
+    ["HS3252 Professional English – II",2],
+    ["MA3251 Statistics",4],
+    ["PH3256 Physics for IS",3],
+    ["BE3251 BEEE",3],
+    ["GE3251 Engineering Graphics",4],
+    ["CS3251 Programming in C",3],
+    ["GE3271 Engineering Practices Lab",2],
+    ["CS3271 C Lab",2],
+    ["GE3272 Communication Lab",2],
+    ["GE3252 Tamil",1]
+  ]}
+};
 
-/* ================= FUNCTIONS ================= */
+let appState = {name:"",email:"",completed:0,gpas:{}};
 
-function sendUsage(name, email) {
-  const data = new URLSearchParams();
-  // 🔥 Your entry field IDs
-  data.append("entry.782499053", name);
-  data.append("entry.1195044287", email);
-
-  fetch(GOOGLE_FORM_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: data
-  });
+/* ===== FUNCTIONS ===== */
+function sendUsage(name,email){
+  const d = new URLSearchParams();
+  d.append("entry.782499053",name);
+  d.append("entry.1195044287",email);
+  fetch(GOOGLE_FORM_URL,{method:"POST",mode:"no-cors",body:d});
 }
 
-function startApp() {
+function startApp(){
   const name = studentName.value.trim();
   const email = studentEmail.value.trim();
   const count = semesterCount.value;
 
-  if (!name || !email || !count) {
-    alert("Fill all fields");
-    return;
-  }
+  if(!name||!email||!count){alert("Fill all fields");return;}
 
-  appState = { name, email, completed: +count, gpas:{} };
-  sendUsage(name, email);
+  appState={name,email,completed:+count,gpas:{}};
+  sendUsage(name,email);
   loadSemester(1);
 }
 
-function loadSemester(sem) {
+function loadSemester(sem){
   resetPages();
   pageGPA.classList.remove("hidden");
-
-  // 🔴 Clear old GPA for this sem
-  appState.gpas[sem] = undefined;
-
-  gpaTitle.innerText = `Semester ${sem} GPA – ${appState.name}`;
-  subjects.innerHTML = "";
-  gpaResult.innerText = "";
-  cgpaBtn.classList.add("hidden");
-
-  semesters[sem].subjects.forEach((s, i) => {
-    subjects.innerHTML += `
+  gpaTitle.innerText=`Semester ${sem} GPA – ${appState.name}`;
+  subjects.innerHTML="";
+  semesters[sem].subjects.forEach((s,i)=>{
+    subjects.innerHTML+=`
       <label>${s[0]} (${s[1]} credits)</label>
       <select id="g${i}">
-        <option value="">Select grade</option>
+        <option value="">Select</option>
         <option>O</option><option>A+</option><option>A</option>
         <option>B+</option><option>B</option><option>C</option><option>U</option>
       </select>`;
   });
-
-  pageGPA.dataset.sem = sem;
+  pageGPA.dataset.sem=sem;
 }
 
-function calculateGPA() {
-  const sem = pageGPA.dataset.sem;
-  let total = 0, credits = 0;
-
-  semesters[sem].subjects.forEach((s, i) => {
-    const g = document.getElementById("g"+i).value;
-    if (!g) return;
-    total += gradeMap[g] * s[1];
-    credits += s[1];
+function calculateGPA(){
+  const sem=pageGPA.dataset.sem;
+  let t=0,c=0;
+  semesters[sem].subjects.forEach((s,i)=>{
+    const g=document.getElementById("g"+i).value;
+    if(!g)return;
+    t+=gradeMap[g]*s[1];
+    c+=s[1];
   });
-
-  const gpa = (total / credits).toFixed(3);
-  appState.gpas[sem] = gpa;
-  gpaResult.innerText = `Semester ${sem} GPA: ${gpa}`;
-
-  if (sem < appState.completed) {
-    cgpaBtn.classList.remove("hidden");
-    cgpaBtn.onclick = () => loadSemester(sem+1);
-  } else {
-    cgpaBtn.classList.remove("hidden");
-  }
+  const gpa=(t/c).toFixed(3);
+  appState.gpas[sem]=gpa;
+  gpaResult.innerText=`Semester ${sem} GPA: ${gpa}`;
 }
 
-function goToCGPA() {
-  resetPages();
-  pageCGPA.classList.remove("hidden");
-  cgpaInputs.innerHTML = "";
-
-  Object.keys(appState.gpas).forEach(s => {
-    cgpaInputs.innerHTML += `
-      <p>Semester ${s} GPA: ${appState.gpas[s]}</p>`;
+function calculateCGPA(){
+  let t=0,c=0;
+  Object.keys(appState.gpas).forEach(s=>{
+    t+=appState.gpas[s]*semesters[s].credits;
+    c+=semesters[s].credits;
   });
+  cgpaResult.innerText=`CGPA: ${(t/c).toFixed(3)}`;
 }
 
-function calculateCGPA() {
-  let total = 0, credits = 0;
-  Object.keys(appState.gpas).forEach(s => {
-    total += appState.gpas[s] * semesters[s].credits;
-    credits += semesters[s].credits;
-  });
-  cgpaResult.innerText =
-    `CGPA: ${(total/credits).toFixed(3)}`;
-}
-
-function backToMenu() {
+function backToMenu(){
   resetPages();
   pageWelcome.classList.remove("hidden");
 }
 
-function resetPages() {
+function resetPages(){
   pageWelcome.classList.add("hidden");
   pageGPA.classList.add("hidden");
   pageCGPA.classList.add("hidden");
 }
 </script>
-
 </body>
 </html>
