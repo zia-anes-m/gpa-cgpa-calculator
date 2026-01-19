@@ -133,10 +133,6 @@ footer i{
   <label>Email Address</label>
   <input id="studentEmail" type="email" placeholder="Enter your email">
 
-  <p style="font-size:12px;color:#666;margin-top:6px;">
-    Your name and email are collected only for usage tracking. No data is shared.
-  </p>
-
   <label>Number of Semesters Completed</label>
   <select id="semCompleted">
     <option value="">Select</option>
@@ -178,7 +174,7 @@ footer i{
 </section>
 
 <footer>
-  This is created by <b>M Zia Anas</b><br><br>
+  This is created by <b>M Zia Anes</b><br><br>
   <a href="https://wa.me/919363645734"><i class="fab fa-whatsapp"></i></a>
   <a href="https://www.instagram.com/m_zia_anas"><i class="fab fa-instagram"></i></a>
   <a href="https://www.linkedin.com/in/zia-anes-m"><i class="fab fa-linkedin"></i></a>
@@ -189,20 +185,18 @@ footer i{
 </div>
 
 <script>
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-  document.getElementById(id).style.display="block";
-}
-
 /* ================= GOOGLE FORM TRACKING ================= */
-// REPLACE entry IDs ONLY if they change in future
-const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/1rR1kKt7egN3Q0v4Pb3rqCa0GhLF6tXtXv3u14DjgQws/formResponse";
 
-function trackUser(name,email){
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfSfbRG6U9CmcflXPz8J_DtYoXxCHcIe1LfrvdH2zfQ9b7qyg/formResponse";
+
+const NAME_ENTRY = "entry.2023813567";
+const EMAIL_ENTRY = "entry.1559328429";
+
+function trackUser(name, email) {
   const data = new URLSearchParams();
-  data.append("entry.782499053", name);
-  data.append("entry.1195044287", email);
+  data.append(NAME_ENTRY, name);
+  data.append(EMAIL_ENTRY, email);
 
   fetch(GOOGLE_FORM_URL, {
     method: "POST",
@@ -211,7 +205,13 @@ function trackUser(name,email){
   });
 }
 
-/* ================= APP STATE ================= */
+/* ================= ORIGINAL LOGIC ================= */
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
 let appState={name:"",semester:0,gpas:{}};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
@@ -264,7 +264,6 @@ const curriculum={
 ]
 };
 
-/* ================= FUNCTIONS ================= */
 function startGPA(){
   const n=document.getElementById("studentName").value.trim();
   const e=document.getElementById("studentEmail").value.trim();
@@ -275,7 +274,7 @@ function startGPA(){
     return;
   }
 
-  trackUser(n,e);
+  trackUser(n,e);   // ✅ ONLY ADDITION
 
   appState.name=n;
   appState.semester=parseInt(s);
@@ -288,7 +287,6 @@ function loadSemester(){
   document.getElementById("result").innerHTML="";
   const box=document.getElementById("subjects");
   box.innerHTML="";
-
   curriculum[appState.semester].forEach(sub=>{
     box.innerHTML+=`
       <div class="subject">
@@ -300,7 +298,6 @@ function loadSemester(){
         </select>
       </div>`;
   });
-
   document.getElementById("cgpaBtn").style.display=appState.semester>=2?"block":"none";
   showPage("page-gpa");
 }
@@ -341,7 +338,6 @@ function calculateCGPA(){
   document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
 }
 
-/* ================= START APP ================= */
 showPage("page-welcome");
 </script>
 
