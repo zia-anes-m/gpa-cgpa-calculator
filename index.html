@@ -29,9 +29,26 @@ body{
 }
 
 .header{
+  position:relative;
   text-align:center;
   margin-bottom:25px;
 }
+
+/* College logo */
+.college-logo{
+  position:absolute;
+  left:0;
+  top:0;
+  width:55px;
+  height:auto;
+}
+
+@media(max-width:600px){
+  .college-logo{
+    width:45px;
+  }
+}
+
 .header h1{
   margin:0;
   font-size:28px;
@@ -123,9 +140,11 @@ footer i{
 
 <section id="page-welcome" class="page">
   <div class="header">
-    <h1>GPA & CGPA Calculator</h1>
-    <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
-  </div>
+  <img src="college-logo.png" alt="College Logo" class="college-logo">
+
+  <h1>GPA & CGPA Calculator</h1>
+  <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+</div>
 
   <label>Student Name</label>
   <input id="studentName" placeholder="Enter your name">
