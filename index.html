@@ -9,73 +9,43 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:"Segoe UI", Roboto, Arial, sans-serif;
   background:#f4f6fb;
   min-height:100vh;
   display:flex;
   justify-content:center;
-  align-items:center;
 }
 
+/* MAIN CONTAINER */
 .card{
-  background:transparent;
   width:100%;
   max-width:750px;
-  padding:20px;
-  box-shadow:none;
+  padding:30px;
 }
 
+/* ===== HEADER (FINAL, CLEAN) ===== */
+
 .header{
-  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   text-align:center;
-  margin-bottom:25px;
+  margin-bottom:30px;
 }
-  
-.header-flex{
+
+.header-row{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:14px;
-  text-align:left;
 }
 
-.college-logo-inline{
+.college-logo{
   width:48px;
   height:auto;
-}
-
-.title-block h1{
-  margin:0;
-}
-
-.title-block p{
-  margin:4px 0 0;
-  font-size:14px;
-  color:#555;
-}
-
-@media(max-width:600px){
-  .header-flex{
-    flex-direction:column;
-    text-align:center;
-  }
-}
-
-/* College logo */
-.college-logo{
-  position:absolute;
-  left:0;
-  top:0;
-  width:55px;
-  height:auto;
-}
-
-@media(max-width:600px){
-  .college-logo{
-    width:45px;
-  }
 }
 
 .header h1{
@@ -83,11 +53,23 @@ body{
   font-size:28px;
   color:#1d2671;
 }
+
 .header p{
-  margin:6px 0 0;
-  color:#555;
+  margin-top:8px;
   font-size:14px;
+  color:#555;
 }
+
+@media(max-width:600px){
+  .header-row{
+    flex-direction:column;
+  }
+  .college-logo{
+    width:42px;
+  }
+}
+
+/* ===== FORM ===== */
 
 label{
   display:block;
@@ -140,6 +122,8 @@ button.secondary{
   color:#1d2671;
 }
 
+/* ===== FOOTER ===== */
+
 footer{
   text-align:center;
   font-size:13px;
@@ -167,15 +151,20 @@ footer i{
 <body>
 <div class="card">
 
+<!-- ===== WELCOME PAGE ===== -->
 <section id="page-welcome" class="page">
-  <div class="header header-flex">
-  <img src="college-logo.png" alt="College Logo" class="college-logo-inline">
+  <div class="header">
+    <div class="header-row">
+      <!-- 🔴 USE DIRECT GOOGLE IMAGE LINK HERE -->
+      <img src="college-logo.png" class="college-logo" alt="College Logo">
+      <h1>GPA & CGPA Calculator</h1>
+    </div>
 
-  <div class="title-block">
-    <h1>GPA & CGPA Calculator</h1>
-    <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+    <p>
+      Computer Science and Engineering<br>
+      Anna University – Regulation 2021
+    </p>
   </div>
-</div>
 
 
   <label>Student Name</label>
