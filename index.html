@@ -20,18 +20,47 @@ body{
 }
 
 .card{
-  background:#fff;
-  width:95%;
+  background:transparent;
+  width:100%;
   max-width:750px;
-  padding:30px;
-  border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.12);
+  padding:20px;
+  box-shadow:none;
 }
 
 .header{
   position:relative;
   text-align:center;
   margin-bottom:25px;
+}
+  
+.header-flex{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  text-align:left;
+}
+
+.college-logo-inline{
+  width:48px;
+  height:auto;
+}
+
+.title-block h1{
+  margin:0;
+}
+
+.title-block p{
+  margin:4px 0 0;
+  font-size:14px;
+  color:#555;
+}
+
+@media(max-width:600px){
+  .header-flex{
+    flex-direction:column;
+    text-align:center;
+  }
 }
 
 /* College logo */
@@ -139,12 +168,15 @@ footer i{
 <div class="card">
 
 <section id="page-welcome" class="page">
-  <div class="header">
-  <img src="college-logo.png" alt="College Logo" class="college-logo">
+  <div class="header header-flex">
+  <img src="college-logo.png" alt="College Logo" class="college-logo-inline">
 
-  <h1>GPA & CGPA Calculator</h1>
-  <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+  <div class="title-block">
+    <h1>GPA & CGPA Calculator</h1>
+    <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+  </div>
 </div>
+
 
   <label>Student Name</label>
   <input id="studentName" placeholder="Enter your name">
