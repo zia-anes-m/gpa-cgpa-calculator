@@ -9,34 +9,28 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
-  font-family:"Segoe UI", Roboto, Arial, sans-serif;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
   background:#f4f6fb;
   min-height:100vh;
   display:flex;
   justify-content:center;
+  align-items:center;
 }
 
-/* MAIN CONTAINER */
 .card{
   width:100%;
   max-width:750px;
   padding:30px;
 }
 
-/* ===== HEADER (FINAL, CLEAN) ===== */
-
+/* ===== HEADER ===== */
 .header{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
   margin-bottom:30px;
 }
 
-.header-row{
+.header-flex{
   display:flex;
   align-items:center;
   justify-content:center;
@@ -44,33 +38,34 @@ body{
 }
 
 .college-logo{
-  width:48px;
+  width:52px;
   height:auto;
 }
 
-.header h1{
+.title-block h1{
   margin:0;
   font-size:28px;
   color:#1d2671;
 }
 
-.header p{
-  margin-top:8px;
+.title-block p{
+  margin:4px 0 0;
   font-size:14px;
   color:#555;
 }
 
+/* Mobile adjustment */
 @media(max-width:600px){
-  .header-row{
+  .header-flex{
     flex-direction:column;
+    text-align:center;
   }
   .college-logo{
-    width:42px;
+    width:48px;
   }
 }
 
 /* ===== FORM ===== */
-
 label{
   display:block;
   margin-top:16px;
@@ -78,7 +73,7 @@ label{
   color:#333;
 }
 
-select,input{
+input,select{
   width:100%;
   padding:11px;
   margin-top:6px;
@@ -107,6 +102,7 @@ button.secondary{
 
 .page{display:none}
 
+/* ===== GPA PAGE ===== */
 .subject{
   padding:10px;
   border-radius:8px;
@@ -123,7 +119,6 @@ button.secondary{
 }
 
 /* ===== FOOTER ===== */
-
 footer{
   text-align:center;
   font-size:13px;
@@ -137,14 +132,14 @@ footer i{
 }
 
 .fa-whatsapp{color:#25D366}
+.fa-linkedin{color:#0A66C2}
+.fa-phone{color:#2E7D32}
+.fa-envelope{color:#D93025}
 .fa-instagram{
   background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
-.fa-linkedin{color:#0A66C2}
-.fa-phone{color:#2E7D32}
-.fa-envelope{color:#D93025}
 </style>
 </head>
 
@@ -154,16 +149,13 @@ footer i{
 <!-- ===== WELCOME PAGE ===== -->
 <section id="page-welcome" class="page">
   <div class="header">
-    <div class="header-row">
-      <!-- 🔴 USE DIRECT GOOGLE IMAGE LINK HERE -->
-      <img src="college-logo.png" class="college-logo" alt="College Logo">
-      <h1>GPA & CGPA Calculator</h1>
+    <div class="header-flex">
+      <img src="college-logo.png" alt="College Logo" class="college-logo">
+      <div class="title-block">
+        <h1>GPA & CGPA Calculator</h1>
+        <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+      </div>
     </div>
-
-    <p>
-      Computer Science and Engineering<br>
-      Anna University – Regulation 2021
-    </p>
   </div>
 
 
