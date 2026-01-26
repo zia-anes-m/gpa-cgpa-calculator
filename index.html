@@ -206,7 +206,7 @@ footer i{
   <button onclick="calculateCGPA()">Calculate CGPA</button>
   <div id="cgpaResult" class="result"></div>
 
-  <button class="secondary" onclick="showPage('page-welcome')">Back to Menu</button>
+  <button class="secondary" onclick="resetCGPA()">Back to Menu</button>
 </section>
 
 <footer>
@@ -372,6 +372,11 @@ function calculateCGPA(){
     credits+=semesterCredits[i];
   }
   document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
+}
+
+function resetCGPA(){
+  document.getElementById("cgpaResult").innerText = "";
+  showPage("page-welcome");
 }
 
 showPage("page-welcome");
