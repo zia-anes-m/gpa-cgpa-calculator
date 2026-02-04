@@ -176,6 +176,7 @@ footer i{
     <option>2</option>
     <option>3</option>
     <option>4</option>
+    <option>5</option>
   </select>
 
   <button onclick="startGPA()">Continue</button>
@@ -251,7 +252,7 @@ function showPage(id){
 let appState={name:"",semester:0,gpas:{}};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
-const semesterCredits={1:22,2:26,3:23,4:22};
+const semesterCredits={1:22,2:26,3:23,4:22,5:20};
 
 const curriculum={
 1:[
@@ -297,6 +298,14 @@ const curriculum={
 {code:"GE3451",name:"Environmental Sciences and Sustainability",credits:2},
 {code:"CS3461",name:"Operating Systems Laboratory",credits:1.5},
 {code:"CS3481",name:"Database Management Systems Laboratory",credits:1.5}
+],
+5:[
+{code:"CS3591", name:"Computer Networks", credits:4},
+{code:"CS3501", name:"Compiler Design", credits:4},
+{code:"CB3491", name:"Cryptography and Cyber Security", credits:3},
+{code:"CS3551", name:"Distributed Computing", credits:3},
+{code:"CCS366", name:"Software Testing and Automation", credits:3},
+{code:"CCS375", name:"Web Technologies", credits:3}
 ]
 };
 
