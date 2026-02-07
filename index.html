@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GPA & CGPA Calculator | Anna University R2021</title>
+<title>GPA & CGPA Calculator | Anna University </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -157,7 +157,7 @@ footer i{
       <img src="college-logo.png" alt="College Logo" class="college-logo">
       <div class="title-block">
         <h1>GPA & CGPA Calculator</h1>
-        <p>Computer Science and Engineering<br>Anna University – Regulation 2021</p>
+        <p>Computer Science and Engineering<br>Anna University</p>
       </div>
     </div>
   </div>
@@ -169,14 +169,15 @@ footer i{
   <label>Email Address</label>
   <input id="studentEmail" type="email" placeholder="Enter your email">
 
+  <label>Regulation</label>
+  <select id="regulation" onchange="updateSemesterOptions()">
+    <option value="">Select Regulation</option>
+    <option value="2021">R2021</option>
+    <option value="2025">R2025</option>
+  </select>
   <label>Number of Semesters Completed</label>
   <select id="semCompleted">
-    <option value="">Select</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
+    <option value="">Select Semester</option>
   </select>
 
   <button onclick="startGPA()">Continue</button>
@@ -249,12 +250,18 @@ function showPage(id){
   document.getElementById(id).style.display="block";
 }
 
-let appState={name:"",semester:0,gpas:{}};
+let appState={
+  name:"",
+  semester:0,
+  regulation:"",
+  gpas:{}
+};
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
-const semesterCredits={1:22,2:26,3:23,4:22,5:20};
+const semesterCredits2021={1:22,2:26,3:23,4:22,5:20};
+const semesterCredits2025={1:23};
 
-const curriculum={
+const curriculum2021={
 1:[
 {code:"HS3152",name:"Professional English I",credits:3},
 {code:"MA3151",name:"Matrices and Calculus",credits:4},
@@ -309,30 +316,82 @@ const curriculum={
 ]
 };
 
+const curriculum2025={
+1:[
+{code:"MA25C01", name:"Applied Calculus", credits:4},
+{code:"EN25C01", name:"English Essentials - 1", credits:2},
+{code:"UC25H01", name:"Heritage of Tamils", credits:1},
+{code:"PH25C01", name:"Applied Physics - 1", credits:3},
+{code:"CY25C01", name:"Applied Chemistry - 1", credits:3},
+{code:"CS25C01", name:"Computer Programming: C", credits:3},
+{code:"CS25C03", name:"Essentials of Computing", credits:3},
+{code:"ME25C04", name:"Makerspace", credits:2},
+{code:"UC25A01", name:"Life Skills for Engineers - 1", credits:1},
+{code:"UC25A02", name:"Physical Education - 1", credits:1}
+]
+};
+
+
+function updateSemesterOptions(){
+
+  const reg = document.getElementById("regulation").value;
+  const semBox = document.getElementById("semCompleted");
+
+  semBox.innerHTML = '<option value="">Select Semester</option>';
+
+  if(reg==="2021"){
+    for(let i=1;i<=5;i++){
+      semBox.innerHTML += `<option>${i}</option>`;
+    }
+  }
+
+  if(reg==="2025"){
+    semBox.innerHTML += `<option>1</option>`;
+  }
+}
+
 function startGPA(){
+
   const n=document.getElementById("studentName").value.trim();
   const e=document.getElementById("studentEmail").value.trim();
+  const r=document.getElementById("regulation").value;
   const s=document.getElementById("semCompleted").value;
 
-  if(!n||!e||!s){
-    alert("Please enter Name, Email and Semester");
+  if(!n||!e||!r||!s){
+    alert("Please fill all fields");
     return;
   }
 
-  trackUser(n,e);   // ✅ ONLY ADDITION
+  trackUser(n,e);
 
   appState.name=n;
+  appState.regulation=r;
   appState.semester=parseInt(s);
+
   loadSemester();
 }
 
 function loadSemester(){
-  document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
+  
+document.querySelector(".title-block p").innerText =
+"Computer Science and Engineering\nAnna University – Regulation " + appState.regulation;
+
+document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA`;
   document.getElementById("userText").innerText=`Hello ${appState.name}`;
   document.getElementById("result").innerHTML="";
   const box=document.getElementById("subjects");
   box.innerHTML="";
-  curriculum[appState.semester].forEach(sub=>{
+  let data;
+
+  if(appState.regulation==="2021"){
+    data = curriculum2021;
+  }
+
+  if(appState.regulation==="2025"){
+    data = curriculum2025;
+  }
+
+  data[appState.semester].forEach(sub=>{
     box.innerHTML+=`
       <div class="subject">
         <label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
@@ -348,16 +407,38 @@ function loadSemester(){
 }
 
 function calculateGPA(){
-  let tc=0,tp=0;
-  for(const s of curriculum[appState.semester]){
-    const g=document.getElementById(s.code).value;
-    if(!g){alert("Please select all grades");return;}
-    tc+=s.credits;
-    tp+=gradePoints[g]*s.credits;
+
+  let tc = 0;
+  let tp = 0;
+  let data;
+
+  // Select correct curriculum
+  if(appState.regulation === "2021"){
+    data = curriculum2021;
   }
-  const gpa=(tp/tc).toFixed(2);
-  appState.gpas[appState.semester]=parseFloat(gpa);
-  document.getElementById("result").innerText=`GPA : ${gpa}`;
+
+  if(appState.regulation === "2025"){
+    data = curriculum2025;
+  }
+
+  for(const s of data[appState.semester]){
+
+    const g = document.getElementById(s.code).value;
+
+    if(!g){
+      alert("Please select all grades");
+      return;
+    }
+
+    tc += s.credits;
+    tp += gradePoints[g] * s.credits;
+  }
+
+  const gpa = (tp / tc).toFixed(2);
+
+  appState.gpas[appState.semester] = parseFloat(gpa);
+
+  document.getElementById("result").innerText = `GPA : ${gpa}`;
 }
 
 function showCGPAPage(){
@@ -373,14 +454,37 @@ function showCGPAPage(){
 }
 
 function calculateCGPA(){
-  let total=0,credits=0;
-  for(let i=1;i<=appState.semester;i++){
-    const g=parseFloat(document.getElementById(`gpa${i}`).value);
-    if(isNaN(g)){alert("Please enter all GPAs");return;}
-    total+=g*semesterCredits[i];
-    credits+=semesterCredits[i];
+
+  let total = 0;
+  let credits = 0;
+  let creditMap;
+
+  // Select correct credit map
+  if(appState.regulation === "2021"){
+    creditMap = semesterCredits2021;
   }
-  document.getElementById("cgpaResult").innerText=`CGPA : ${(total/credits).toFixed(2)}`;
+
+  if(appState.regulation === "2025"){
+    creditMap = semesterCredits2025;
+  }
+
+  for(let i = 1; i <= appState.semester; i++){
+
+    const g = parseFloat(
+      document.getElementById(`gpa${i}`).value
+    );
+
+    if(isNaN(g)){
+      alert("Please enter all GPAs");
+      return;
+    }
+
+    total += g * creditMap[i];
+    credits += creditMap[i];
+  }
+
+  document.getElementById("cgpaResult").innerText =
+    `CGPA : ${(total/credits).toFixed(2)}`;
 }
 
 function resetCGPA(){
