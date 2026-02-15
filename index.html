@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GPA & CGPA Calculator | Anna University | Computer Science and Engineering </title>
+<title>GPA & CGPA Calculator | Anna University </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -162,7 +162,6 @@ footer i{
     </div>
   </div>
 
-
   <label>Student Name</label>
   <input id="studentName" placeholder="Enter your name">
 
@@ -221,6 +220,42 @@ footer i{
 </footer>
 
 </div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAg9g2kxoZQa81huye_KsBhdgyammefnAo",
+  authDomain: "gpa-cgpa-calc.firebaseapp.com",
+  projectId: "gpa-cgpa-calc",
+  storageBucket: "gpa-cgpa-calc.firebasestorage.app",
+  messagingSenderId: "152997298833",
+  appId: "1:152997298833:web:dc63339be1f6614e5cb530",
+  measurementId: "G-6XD6K25QFJ"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.saveResultToFirebase = async function(data) {
+    try {
+      await addDoc(collection(db, "results"), {
+        ...data,
+        createdAt: serverTimestamp()
+      });
+      console.log("Saved to Firebase");
+    } catch ( e ) {
+      console.error("Firebase error: ", e);
+    }
+  };
+</script>
+
 
 <script>
 /* ================= GOOGLE FORM TRACKING ================= */
@@ -331,7 +366,6 @@ const curriculum2025={
 ]
 };
 
-
 function updateSemesterOptions(){
 
   const reg = document.getElementById("regulation").value;
@@ -435,13 +469,20 @@ function calculateGPA(){
   }
 
   const gpa = (tp / tc).toFixed(2);
-
+  window.saveResultToFirebase({
+    name: appState.name,
+    email: document.getElementById("studentEmail").value,
+    semester: appState.semester,
+    regulation: appState.regulation,
+    gpa: gpa
+  });
   appState.gpas[appState.semester] = parseFloat(gpa);
 
   document.getElementById("result").innerText = `GPA : ${gpa}`;
 }
 
 function showCGPAPage(){
+  document.getElementById("cgpaResult").innerText = "";
   let html="";
   for(let i=1;i<=appState.semester;i++){
     html+=`
@@ -483,6 +524,13 @@ function calculateCGPA(){
     credits += creditMap[i];
   }
 
+  window.saveResultToFirebase({
+    name: appState.name,
+    email: document.getElementById("studentEmail").value,
+    semester: appState.semester,
+    regulation: appState.regulation,
+    cgpa: (total/credits).toFixed(2)
+  });
   document.getElementById("cgpaResult").innerText =
     `CGPA : ${(total/credits).toFixed(2)}`;
 }
@@ -497,3 +545,4 @@ showPage("page-welcome");
 
 </body>
 </html>
+
