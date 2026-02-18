@@ -221,15 +221,18 @@ footer i{
 
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
+
+import { 
   getFirestore,
   addDoc,
   collection,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyAg9g2kxoZQa81huye_KsBhdgyammefnAo",
   authDomain: "gpa-cgpa-calc.firebaseapp.com",
@@ -240,22 +243,22 @@ const firebaseConfig = {
   measurementId: "G-6XD6K25QFJ"
 };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
 
-  window.saveResultToFirebase = async function(data) {
-    try {
-      await addDoc(collection(db, "results"), {
-        ...data,
-        createdAt: serverTimestamp()
-      });
-      console.log("Saved to Firebase");
-    } catch ( e ) {
-      console.error("Firebase error: ", e);
-    }
-  };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.saveToFirebase = async function(data) {
+  try {
+    await addDoc(collection(db, "results"), {
+      ...data,
+      createdAt: serverTimestamp()
+    });
+    console.log("Saved to Firebase");
+  } catch (e) {
+    console.error("Firebase Error:", e);
+  }
+};
+
 </script>
-
 
 <script>
 /* ================= GOOGLE FORM TRACKING ================= */
@@ -469,12 +472,13 @@ function calculateGPA(){
   }
 
   const gpa = (tp / tc).toFixed(2);
-  window.saveResultToFirebase({
+  window.saveToFirebase({
     name: appState.name,
     email: document.getElementById("studentEmail").value,
     semester: appState.semester,
     regulation: appState.regulation,
-    gpa: gpa
+    gpa: Number(gpa),
+    type: "GPA"
   });
   appState.gpas[appState.semester] = parseFloat(gpa);
 
@@ -524,15 +528,17 @@ function calculateCGPA(){
     credits += creditMap[i];
   }
 
-  window.saveResultToFirebase({
+  const cgpa = (total / credits).toFixed(2);
+  window.saveToFirebase({
     name: appState.name,
     email: document.getElementById("studentEmail").value,
     semester: appState.semester,
     regulation: appState.regulation,
-    cgpa: (total/credits).toFixed(2)
+    cgpa: Number(cgpa),
+    type: "CGPA"
   });
   document.getElementById("cgpaResult").innerText =
-    `CGPA : ${(total/credits).toFixed(2)}`;
+  "CGPA:"+cgpa
 }
 
 function resetCGPA(){
