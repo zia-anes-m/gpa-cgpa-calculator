@@ -7,144 +7,416 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:"Segoe UI",Roboto,Arial,sans-serif;
-  background:#f4f6fb;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+
+/* =========================================================
+   QUIET LUXURY GPA / CGPA DASHBOARD UI
+   Author: Senior UI/UX Engineer
+   Style: Apple × Stripe × Linear
+========================================================= */
+
+
+/* ================== GOOGLE FONT ================== */
+
+@import url(‘https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap’);
+
+
+/* ================== ROOT VARIABLES ================== */
+
+:root{
+  --bg-main:#F8F9FA;
+
+  --primary:#4F6EF7;
+  --primary-soft:#EEF2FF;
+
+  --text-main:#111827;
+  --text-muted:#6B7280;
+
+  --border-light:rgba(0,0,0,0.08);
+
+  --success:#22C55E;
+
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:10px;
 }
+
+
+/* ================== RESET ================== */
+
+*{
+  Margin:0;
+  Padding:0;
+  Box-sizing:border-box;
+  Font-family:”Inter”,”SF Pro Display”,system-ui,sans-serif;
+}
+
+
+/* ================== BODY ================== */
+
+Body{
+  Min-height:100vh;
+
+  Display:flex;
+  Justify-content:center;
+
+  Background:var(--bg-main);
+
+  Color:var(--text-main);
+
+  Line-height:1.6;
+}
+
+
+/* ================== MAIN CONTAINER ================== */
 
 .card{
-  width:100%;
-  max-width:750px;
-  padding:30px;
+  Width:100%;
+  Max-width:980px;
+
+  Margin:40px 16px;
+
+  Background:#ffffff;
+
+  Border-radius:var(--radius-lg);
+
+  Padding:48px;
+
+  Padding-bottom:120px; /* Footer protection */
+
+  Border:1px solid var(--border-light);
+
+  Box-shadow:
+    0 10px 24px rgba(0,0,0,0.05),
+    0 2px 6px rgba(0,0,0,0.04);
 }
 
-/* ===== HEADER ===== */
-.header{
-  margin-bottom:30px;
-}
+
+/* ================== HEADER ================== */
 
 .header-flex{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-}
+  Display:flex;
+  Align-items:center;
+  Gap:18px;
 
-.center-text{
-  text-align:center;
+  Margin-bottom:36px;
 }
 
 .college-logo{
-  width:52px;
-  height:auto;
+  Width:56px;
 }
 
 .title-block h1{
-  margin:0;
-  font-size:28px;
-  color:#1d2671;
+  Font-size:clamp(1.3rem,2vw,1.6rem);
+  Font-weight:700;
+  Color:#0F172A;
 }
 
 .title-block p{
-  margin:4px 0 0;
-  font-size:14px;
-  color:#555;
+  Font-size:clamp(0.75rem,1vw,0.85rem);
+  Color:var(--text-muted);
 }
 
-/* Mobile adjustment */
-@media(max-width:600px){
-  .header-flex{
-    flex-direction:column;
-    text-align:center;
-  }
-  .college-logo{
-    width:48px;
-  }
-}
 
-/* ===== FORM ===== */
-label{
-  display:block;
-  margin-top:16px;
+/* ================== GLASS STICKY HEADER ================== */
+
+#semTitle{
+  Position:sticky;
+  Top:0;
+  z-index:50;
+
+  padding:18px 0;
+
+  background:rgba(248,249,250,0.85);
+  backdrop-filter:blur(14px);
+
+  border-bottom:1px solid var(--border-light);
+
+  font-size:clamp(1.2rem,2vw,1.5rem);
   font-weight:600;
-  color:#333;
+
+  color:#1E293B;
+
+  letter-spacing:0.2px;
 }
 
-input,select{
-  width:100%;
-  padding:11px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
+
+/* Pill badge */
+#semTitle::before{
+  Content:”CURRENT”;
+  Display:inline-block;
+
+  Margin-bottom:6px;
+  Padding:3px 10px;
+
+  Background:var(--primary-soft);
+  Color:var(--primary);
+
+  Border-radius:999px;
+
+  Font-size:11px;
+  Font-weight:600;
+
+  Margin-right:8px;
 }
 
-button{
-  width:100%;
-  margin-top:22px;
-  padding:13px;
-  background:linear-gradient(135deg,#1d2671,#3f51b5);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
+
+/* ================== FORM ================== */
+
+Label{
+  Display:block;
+
+  Margin-top:22px;
+
+  Font-size:13px;
+  Font-weight:500;
+
+  Color:#374151;
 }
 
-button.secondary{
-  background:#e0e3f5;
-  color:#1d2671;
+Input,select{
+  Width:100%;
+
+  Margin-top:6px;
+
+  Padding:14px 16px;
+
+  Background:#FBFCFD;
+
+  Border:1px solid var(--border-light);
+
+  Border-radius:var(--radius-sm);
+
+  Font-size:14px;
+  Color:#111827;
+
+  Transition:all 0.25s ease;
 }
 
-.page{display:none}
+Input:focus,
+Select:focus{
+  Outline:none;
 
-/* ===== GPA PAGE ===== */
+  Border-color:var(--primary);
+
+  Background:#ffffff;
+
+  Box-shadow:0 0 0 4px rgba(79,110,247,0.15);
+}
+
+
+/* ================== SUBJECT GRID ================== */
+
+#subjects,
+.grid{
+  Display:grid;
+
+  Grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+  Gap:28px;
+
+  Margin-top:24px;
+}
+
+
+/* ================== SUBJECT CARD ================== */
+
 .subject{
-  padding:10px;
-  border-radius:8px;
-  background:#f7f8ff;
-  margin-top:12px;
+  Background:#ffffff;
+
+  Border:1px solid var(--border-light);
+
+  Border-radius:var(--radius-md);
+
+  Padding:20px;
+
+  Box-shadow:0 4px 6px rgba(0,0,0,0.05);
+
+  Transition:all 0.3s ease;
+
+  Opacity:0;
+  Transform:translateY(16px);
+
+  Animation:fadeUp 0.6s ease forwards;
 }
+
+
+/* Fade-in on scroll (auto) */
+@keyframes fadeUp{
+  To{
+    Opacity:1;
+    Transform:translateY(0);
+  }
+}
+
+
+/* Hover / Lift */
+.subject:hover{
+  Transform:scale(1.02);
+
+  Border-color:var(--primary);
+
+  Box-shadow:0 12px 28px rgba(79,110,247,0.18);
+}
+
+
+/* Selected Grade */
+.subject.active{
+  Border-color:var(--success);
+
+  Box-shadow:0 0 0 3px rgba(34,197,94,0.15);
+}
+
+
+/* Heavy credit highlight */
+.subject.heavy{
+  Border-left:4px solid #F59E0B;
+}
+
+
+/* ================== BUTTON ================== */
+
+Button{
+  Display:block;
+
+  Width:100%;
+  Max-width:360px;
+
+  Margin:28px auto 0;
+
+  Padding:14px 20px;
+
+  Border-radius:var(--radius-md);
+
+  Border:1px solid rgba(79,110,247,0.25);
+
+  Background:linear-gradient(
+    180deg,
+    #F2F5FF,
+    #E6EBFF
+  );
+
+  Color:#1E3A8A;
+
+  Font-size:14px;
+  Font-weight:600;
+
+  Cursor:pointer;
+
+  Transition:all 0.25s ease;
+
+  Box-shadow:0 4px 10px rgba(79,110,247,0.18);
+}
+
+
+/* Hover */
+Button:hover{
+  Background:linear-gradient(
+    180deg,
+    #E6EBFF,
+    #D9E0FF
+  );
+
+  Transform:translateY(-1px);
+
+  Box-shadow:0 8px 18px rgba(79,110,247,0.28);
+}
+
+
+/* Secondary */
+Button.secondary{
+  Background:#F3F4F6;
+
+  Color:#374151;
+
+  Border:1px solid var(--border-light);
+
+  Box-shadow:none;
+}
+
+Button.secondary:hover{
+  Background:#E5E7EB;
+}
+
+
+/* ================== RESULT ================== */
 
 .result{
-  text-align:center;
-  margin-top:20px;
-  font-size:20px;
-  font-weight:bold;
-  color:#1d2671;
+  Margin-top:30px;
+
+  Background:#F9FAFB;
+
+  Border:1px solid var(--border-light);
+
+  Border-radius:var(--radius-md);
+
+  Padding:20px;
+
+  Text-align:center;
+
+  Font-size:clamp(1.1rem,2vw,1.3rem);
+  Font-weight:600;
+
+  Color:var(--primary);
 }
 
-/* ===== FOOTER ===== */
-footer{
-  text-align:center;
-  font-size:13px;
-  color:#444;
-  margin-top:30px;
+
+/* ================== FOOTER (UNCHANGED) ================== */
+
+Footer{
+  Text-align:center;
+  Font-size:13px;
+  Color:#444;
+  Margin-top:30px;
 }
 
-footer i{
-  font-size:22px;
-  margin:0 8px;
+Footer i{
+  Font-size:22px;
+  Margin:0 8px;
 }
 
 .fa-whatsapp{color:#25D366}
 .fa-linkedin{color:#0A66C2}
 .fa-phone{color:#2E7D32}
 .fa-envelope{color:#D93025}
+
 .fa-instagram{
-  background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+  Background:radial-gradient(circle at 30% 30%,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
+
+
+/* ================== MOBILE ================== */
+
+@media(max-width:700px){
+
+  .card{
+    Padding:28px 20px;
+  }
+
+  .header-flex{
+    Flex-direction:column;
+    Align-items:flex-start;
+  }
+
+  #subjects,
+  .grid{
+    Grid-template-columns:1fr;
+    Gap:22px;
+  }
+
+  Button{
+    Max-width:100%;
+  }
+
+}
+
 </style>
+
+
 </head>
 
 <body>
@@ -222,16 +494,13 @@ footer i{
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
 import { 
   getFirestore,
   addDoc,
   collection,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyAg9g2kxoZQa81huye_KsBhdgyammefnAo",
@@ -242,7 +511,6 @@ const firebaseConfig = {
   appId: "1:152997298833:web:dc63339be1f6614e5cb530",
   measurementId: "G-6XD6K25QFJ"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -257,7 +525,6 @@ window.saveToFirebase = async function(data) {
     console.error("Firebase Error:", e);
   }
 };
-
 </script>
 
 <script>
@@ -551,4 +818,5 @@ showPage("page-welcome");
 
 </body>
 </html>
+
 
