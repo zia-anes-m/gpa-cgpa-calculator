@@ -721,18 +721,18 @@ document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA
   data[appState.semester].forEach(sub=>{
     let weightClass = "";
 
-if (sub.credits >= 4) {
-  weightClass = "weight-heavy";
-} else if (sub.credits == 3) {
-  weightClass = "weight-medium";
-} else if (sub.credits == 2) {
-  weightClass = "weight-light";
-} else {
-  weightClass = "weight-mini";
-}
+    if (sub.credits >= 4) {
+      weightClass = "weight-heavy";
+    } else if (sub.credits == 3) {
+      weightClass = "weight-medium";
+    } else if (sub.credits == 2) {
+      weightClass = "weight-light";
+    } else {
+      weightClass = "weight-mini";
+    }
 
-box.innerHTML+=`
-  <div class="subject ${weightClass}">
+    box.innerHTML+=`
+      <div class="subject ${weightClass}">
         <label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
         <select id="${sub.code}">
           <option value="">Select Grade</option>
