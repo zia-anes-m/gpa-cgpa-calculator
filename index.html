@@ -86,6 +86,33 @@ Body{
 }
 
 
+/* ===== CREDIT WEIGHT COLORS ===== */
+
+/* 4+ credits (Heavy) */
+.weight-heavy {
+  border-left: 6px solid #E5484D;
+  background: linear-gradient(to right, rgba(229,72,77,0.08), #ffffff);
+}
+
+/* 3 credits (Medium) */
+.weight-medium {
+  border-left: 6px solid #F59E0B;
+  background: linear-gradient(to right, rgba(245,158,11,0.08), #ffffff);
+}
+
+/* 2 credits (Light) */
+.weight-light {
+  border-left: 6px solid #FACC15;
+  background: linear-gradient(to right, rgba(250,204,21,0.08), #ffffff);
+}
+
+/* 1 credit (Mini) */
+.weight-mini {
+  border-left: 6px solid #22C55E;
+  background: linear-gradient(to right, rgba(34,197,94,0.08), #ffffff);
+}
+
+
 /* ================== HEADER ================== */
 
 .header-flex{
@@ -333,7 +360,7 @@ Button.secondary:hover{
 }
 
 
-/* ================== RESULT ================== */
+/* ================== RESULT   ================== */
 
 .result{
   Margin-top:30px;
@@ -692,8 +719,20 @@ document.getElementById("semTitle").innerText=`Semester ${appState.semester} GPA
   }
 
   data[appState.semester].forEach(sub=>{
-    box.innerHTML+=`
-      <div class="subject">
+    let weightClass = "";
+
+if (sub.credits >= 4) {
+  weightClass = "weight-heavy";
+} else if (sub.credits == 3) {
+  weightClass = "weight-medium";
+} else if (sub.credits == 2) {
+  weightClass = "weight-light";
+} else {
+  weightClass = "weight-mini";
+}
+
+box.innerHTML+=`
+  <div class="subject ${weightClass}">
         <label>${sub.code} – ${sub.name} (Credits: ${sub.credits})</label>
         <select id="${sub.code}">
           <option value="">Select Grade</option>
