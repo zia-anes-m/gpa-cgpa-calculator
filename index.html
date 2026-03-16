@@ -473,11 +473,11 @@ Footer i{
     <option value="">Select Semester</option>
   </select>
 
-  <p style="color:#dc2626; font-weight:600; margin-top:15px;">
-⚠️ Maintenance Notice: The calculator is temporarily disabled while curriculum credits are being updated.
+  <p style="color:#16A34A; font-weight:600; margin-top:15px;">
+🟢 New Update: Naan Mudhalvan subject has been added with default 2 credits as per the CAHCET curriculum.
 </p>
 
-  <button disabled>Continue</button>
+  <button onclick="startGPA()">Continue</button>
 </section>
 
 <section id="page-gpa" class="page">
@@ -589,7 +589,7 @@ let appState={
 };
 
 const gradePoints={O:10,"A+":9,A:8,"B+":7,B:6,C:5,RA:0};
-const semesterCredits2021={1:22,2:26,3:23,4:22,5:20};
+const semesterCredits2021={1:22,2:26,3:25,4:24,5:22};
 const semesterCredits2025={1:23};
 
 const curriculum2021={
@@ -626,6 +626,7 @@ const curriculum2021={
 {code:"CS3381",name:"Object Oriented Programming Laboratory",credits:1.5},
 {code:"CS3361",name:"Data Science Laboratory",credits:2},
 {code:"GE3361",name:"Professional Development",credits:1}
+{code: "NM1113",name: "Naan Mudhalvan",credits:2}
 ],
 4:[
 {code:"CS3452",name:"Theory of Computation",credits:3},
@@ -636,6 +637,7 @@ const curriculum2021={
 {code:"GE3451",name:"Environmental Sciences and Sustainability",credits:2},
 {code:"CS3461",name:"Operating Systems Laboratory",credits:1.5},
 {code:"CS3481",name:"Database Management Systems Laboratory",credits:1.5}
+{code: "NM1074",name: "Naan Mudhalvan",credits:2}
 ],
 5:[
 {code:"CS3591", name:"Computer Networks", credits:4},
@@ -644,6 +646,7 @@ const curriculum2021={
 {code:"CS3551", name:"Distributed Computing", credits:3},
 {code:"CCS366", name:"Software Testing and Automation", credits:3},
 {code:"CCS375", name:"Web Technologies", credits:3}
+{code: "NM1020",name: "Naan Mudhalvan",credits:2}
 ]
 };
 
@@ -856,6 +859,3 @@ showPage("page-welcome");
 
 </body>
 </html>
-
-
-
