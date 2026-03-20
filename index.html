@@ -1048,7 +1048,9 @@ const firebaseConfig = {
         
 const app = initializeApp(firebaseConfig);      
         
-window.db = getFirestore(app);      
+window.db = getFirestore(app); 
+window.getDocs = getDocs;
+window.collection = collection;     
         
 window.saveToFirebase = async function(data) {      
         
@@ -1691,7 +1693,7 @@ function resetCGPA(){
         
 async function loadAdminData(){        
         
-  const snapshot = await getDocs(collection(db,"results"));        
+  const snapshot = await window.getDocs(window.collection(window.db,"results"));       
         
   allData = [];        
         
